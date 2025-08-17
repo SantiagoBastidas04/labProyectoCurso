@@ -9,6 +9,7 @@ import java.security.Provider.Service;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
@@ -44,6 +45,29 @@ public class UserRepositorio implements IUserRepositorio{
         }
         return false;
     }
+    public User iniciarSesion(String email,String contrasenia){
+        try{
+         if (email == null || email.isBlank() || contrasenia == null || contrasenia.isBlank()) {
+            return null;
+        }
+        String sql = "SELECT email, contrasenia FROM Usuario WHERE email = ? AND contrasenia = ?";
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, email);
+        pstmt.setString(2, contrasenia); 
+        
+        ResultSet rs = pstmt.executeQuery();
+
+        if (rs.next()) {
+            User usuario = new User();
+            usuario.setEmail(rs.getString("email"));
+            usuario.setContraseña(rs.getString("contrasenia")); 
+            return usuario;
+        }
+    } catch (SQLException ex) {
+         Logger.getLogger(Service.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    return null;
+    }
      private void initDatabase() {
         // SQL statement for creating a new table
         String sql = "CREATE TABLE IF NOT EXISTS User (\n"
@@ -62,8 +86,9 @@ public class UserRepositorio implements IUserRepositorio{
             Logger.getLogger(Service.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public void connect() {
+
         // SQLite connection string
         //String url = "jdbc:sqlite:./mydatabase.db";
         String url = "jdbc:sqlite::memory:";

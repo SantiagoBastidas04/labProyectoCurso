@@ -12,5 +12,6 @@ import java.awt.List;
  */
 public interface IUserRepositorio {
     boolean guardar(User usuario);
+    User iniciarSesion(String email,String contrasenia);
     
 }
