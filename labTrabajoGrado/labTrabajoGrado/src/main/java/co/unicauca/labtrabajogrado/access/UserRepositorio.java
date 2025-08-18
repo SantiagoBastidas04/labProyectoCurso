@@ -28,21 +28,26 @@ public class UserRepositorio implements IUserRepositorio{
     
     @Override
     public boolean guardar(User newUser){
-        try {
+        /*try {
         //Validar Usuario
         if((newUser == null) || (newUser.getEmail().isBlank()) || (newUser.getContraseña().isBlank())){
             return false;
         }
-        String sql = "INSERT INTO Usuario ( email, contrasenia)"
-                + "VALUES( ?, ?)";
-        
-        PreparedStatement pstmt = conn.prepareStatement(sql);
-        pstmt.setString(1, newUser.getEmail());
-        pstmt.setString(2, newUser.getContraseña());
+        String sql = "INSERT INTO Usuario (nombres, apellidos, celular, programa, rol, email, contrasenia) " +
+             "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, newUser.getNombres());
+            pstmt.setString(2, newUser.getApellidos());
+            pstmt.setString(3, newUser.getCelular());
+            pstmt.setString(4, newUser.getPrograma());
+            pstmt.setString(5, newUser.getRol());
+            pstmt.setString(6, newUser.getEmail());
+            pstmt.setString(7, newUser.getContraseña());
+            pstmt.executeUpdate();
         return true;
         } catch (SQLException ex) {
             Logger.getLogger(Service.class.getName());
-        }
+        }*/
         return false;
     }
     public User iniciarSesion(String email,String contrasenia){
@@ -69,21 +74,20 @@ public class UserRepositorio implements IUserRepositorio{
     return null;
     }
      private void initDatabase() {
-        // SQL statement for creating a new table
-        String sql = "CREATE TABLE IF NOT EXISTS User (\n"
-                + "	UserId integer PRIMARY KEY,\n"
-                + "	email text NOT NULL,\n"
-                + "	contrasenia text NOT NULL\n"
-                + ");";
-
-        try {
-            this.connect();
-            Statement stmt = conn.createStatement();
+        String sql = "CREATE TABLE IF NOT EXISTS Usuario (" +
+                     "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                     "nombres TEXT NOT NULL," +
+                     "apellidos TEXT NOT NULL," +
+                     "celular TEXT," +
+                     "programa TEXT NOT NULL," +
+                     "rol TEXT NOT NULL," +
+                     "email TEXT NOT NULL UNIQUE," +
+                     "contrasenia TEXT NOT NULL" +
+                     ");";
+        try (Statement stmt = conn.createStatement()) {
             stmt.execute(sql);
-            //this.disconnect();
-
         } catch (SQLException ex) {
-            Logger.getLogger(Service.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(UserRepositorio.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

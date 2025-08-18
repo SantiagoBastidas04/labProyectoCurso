@@ -9,6 +9,7 @@ package co.unicauca.labtrabajogrado.domain;
  * @author ING-SIS
  */
 public enum enumRol {
-    Profesor,
-    Estudiante
+    
+    Estudiante,
+    Profesor
 }

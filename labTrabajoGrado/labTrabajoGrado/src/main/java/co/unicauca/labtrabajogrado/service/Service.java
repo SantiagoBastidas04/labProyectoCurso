@@ -3,8 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package co.unicauca.labtrabajogrado.service;
-import co.unicauca.labtrabajogrado.access;
 import co.unicauca.labtrabajogrado.access.IUserRepositorio;
+import co.unicauca.labtrabajogrado.access.UserRepositorio;
 import co.unicauca.labtrabajogrado.domain.User;
 /**
  *
@@ -17,18 +17,18 @@ public class Service {
         this.repositorio = repositorio;
     }
     
-    public boolean registrarUsuario(Usuario newUser){
+    public boolean registrarUsuario(User newUser){
      
         //Validar Usuario
         if((newUser == null) || (newUser.getEmail().isBlank()) || (newUser.getContraseña().isBlank())){
             return false;
         }
-        repositorio.guardar(new User);
+        repositorio.guardar(newUser);
         return true;
     }
 
     public User iniciarSesion(String email, String contrasenia){
-        /
+        
          if (email == null || email.isBlank() || contrasenia == null || contrasenia.isBlank()) {
             return null;
         }

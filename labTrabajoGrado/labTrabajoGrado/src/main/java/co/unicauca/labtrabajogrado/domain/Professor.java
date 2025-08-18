@@ -11,8 +11,8 @@ package co.unicauca.labtrabajogrado.domain;
 public class Professor extends Persona{
     
     private User myUser;
-    
-    public Professor(String nombre, String apellidos, String celular, String email, String contraseña) {
+    private enumPrograma programa;
+    public Professor(String nombre, String apellidos, String celular,enumPrograma programa, String email, String contraseña) {
         super(nombre, apellidos, validacionCelular(celular));
         myUser = new User(email,contraseña);
     }

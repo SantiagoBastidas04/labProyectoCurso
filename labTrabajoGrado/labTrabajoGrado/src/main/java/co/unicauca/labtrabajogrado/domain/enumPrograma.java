@@ -9,8 +9,8 @@ package co.unicauca.labtrabajogrado.domain;
  * @author ING-SIS
  */
 public enum enumPrograma {
-    INGENIERIADESISTEMAS,
-    IngenieriaElectronicayTelecomunicaciones, 
-    AutomaticaIndustrial, 
-    TecnologiaenTelematica
+    INGENIERIA_SISTEMAS,
+    INGENIERIA_ELECTRONICA_TELECOMUNICACIONES,
+    AUTOMATICA_INDUSTRIAL,
+    TECNOLOGIA_TELEMATICA
 }
