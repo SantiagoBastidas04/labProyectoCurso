@@ -8,13 +8,27 @@ package co.unicauca.labtrabajogrado.domain;
  *
  * @author ING-SIS
  */
-public class User {
+public class User extends Persona{
+    
     private String email;
     private String contraseña;
+    private enumRol rol;
+    private enumPrograma programa;
 
-    public User(String email, String contraseña) {
+    public User(String nombre, String apellidos, String celular, enumPrograma programa,enumRol rol,String email,String contraseña){
+        super(nombre,apellidos,validacionCelular(celular));
+        this.email = email; 
+        this.contraseña = contraseña;
+        this.rol = rol;
+         this.programa = programa;
+        
+    }
+    public User(String email, String contraseña,enumRol rol, enumPrograma programa) {
         this.email = email;
         this.contraseña = contraseña;
+        this.rol = rol;
+        this.programa = programa;
+
     }
 
     public User() {
@@ -36,5 +50,17 @@ public class User {
         this.contraseña = contraseña;
     }
     
+    public enumRol getRol() {
+        return rol;
+    }
+    public void setRol(enumRol rol) {
+        this.rol = rol;
+    }
+    public enumPrograma getPrograma(){
+        return programa;
+    }
+    public void setPrograma(enumPrograma programa) {
+        this.programa = programa;
+    }
     
 }

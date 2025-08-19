@@ -208,15 +208,15 @@ public class GuiRegister extends javax.swing.JFrame {
         String email = txtEmail.getText();
         String contrasenia = new String(txtContrasenia.getPassword());
 
-        /*User nuevoUsuario = new User(nombres, apellidos, celular, programa, rol, email, contrasenia);*/
+        User nuevoUsuario = new User(nombres, apellidos, celular, programa, rol, email, contrasenia);
 
-        /*boolean exito = service.registrarUsuario(nuevoUsuario);
+        boolean exito = service.registrarUsuario(nuevoUsuario);
 
         if (exito) {
             JOptionPane.showMessageDialog(this, "Usuario registrado con éxito!");
         } else {
             JOptionPane.showMessageDialog(this, "Error en el registro. Verifique los datos.");
-        }*/
+        }
 
     } catch (Exception ex) {
         JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());

@@ -8,17 +8,9 @@ package co.unicauca.labtrabajogrado.domain;
  *
  * @author ING-SIS
  */
-public class Student extends Persona{
-    
-    private User myUser;
-    private enumPrograma programa;
+public class Student extends User{
     
     
-    public Student(String nombre, String apellidos, String celular, enumPrograma programa, String email, String contraseña) {
-        super(nombre, apellidos, validacionCelular(celular));
-        this.programa = programa;
-        myUser = new User(email, contraseña);
-    }
         
     
     

@@ -28,7 +28,7 @@ public class UserRepositorio implements IUserRepositorio{
     
     @Override
     public boolean guardar(User newUser){
-        /*try {
+        try {
         //Validar Usuario
         if((newUser == null) || (newUser.getEmail().isBlank()) || (newUser.getContraseña().isBlank())){
             return false;
@@ -36,20 +36,21 @@ public class UserRepositorio implements IUserRepositorio{
         String sql = "INSERT INTO Usuario (nombres, apellidos, celular, programa, rol, email, contrasenia) " +
              "VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, newUser.getNombres());
+            pstmt.setString(1, newUser.getNombre());
             pstmt.setString(2, newUser.getApellidos());
             pstmt.setString(3, newUser.getCelular());
-            pstmt.setString(4, newUser.getPrograma());
-            pstmt.setString(5, newUser.getRol());
+            pstmt.setString(4, newUser.getPrograma().name());
+            pstmt.setString(5, newUser.getRol().name());
             pstmt.setString(6, newUser.getEmail());
             pstmt.setString(7, newUser.getContraseña());
             pstmt.executeUpdate();
         return true;
         } catch (SQLException ex) {
             Logger.getLogger(Service.class.getName());
-        }*/
+        }
         return false;
     }
+    @Override
     public User iniciarSesion(String email,String contrasenia){
         try{
          if (email == null || email.isBlank() || contrasenia == null || contrasenia.isBlank()) {
