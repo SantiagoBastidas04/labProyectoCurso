@@ -7,6 +7,7 @@ import co.unicauca.labtrabajogrado.access.IUserRepositorio;
 import co.unicauca.labtrabajogrado.access.UserRepositorio;
 import co.unicauca.labtrabajogrado.domain.User;
 import co.unicauca.labtrabajogrado.utility.*;
+import javax.swing.JOptionPane;
 /**
  *
 * @author edwin_
@@ -23,14 +24,16 @@ public class Service {
     }
     
     public boolean registrarUsuario(User newUser){
-     
+        
         //Validar Usuario
         if((newUser == null) || (newUser.getEmail().isBlank()) || (newUser.getContraseña().isBlank())){
+            System.out.println("No se puede registrar");
             return false;
+            
         }
         // Validar correo institucional
         if (!EmailValidator.esCorreoInstitucional(newUser.getEmail())) {
-       
+      
         return false;
         }
         // Validar contraseña
@@ -54,8 +57,6 @@ public class Service {
         String contraseniaCifrada = PasswordUtils.cifrarSHA256(contrasenia);
 
         return repositorio.iniciarSesion(email, contraseniaCifrada);
-
-
     }
 
     

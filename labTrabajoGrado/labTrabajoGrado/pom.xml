@@ -5,10 +5,23 @@
     <artifactId>labTrabajoGrado</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+     <dependencies>
+        <dependency>
+            <groupId>org.netbeans.external</groupId>
+            <artifactId>AbsoluteLayout</artifactId>
+            <version>RELEASE210</version>
+        </dependency>
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.45.3.0</version>
+        </dependency>
+    </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>23</maven.compiler.release>
         <exec.mainClass>co.unicauca.labtrabajogrado.LabTrabajoGrado</exec.mainClass>
     </properties>
     <name>labTrabajoGrado</name>
+    
 </project>

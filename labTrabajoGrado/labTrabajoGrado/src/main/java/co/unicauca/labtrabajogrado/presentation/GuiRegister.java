@@ -3,12 +3,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package co.unicauca.labtrabajogrado.presentation;
+import co.unicauca.labtrabajogrado.access.Factory;
+import co.unicauca.labtrabajogrado.access.IUserRepositorio;
 import co.unicauca.labtrabajogrado.domain.Professor;
 import co.unicauca.labtrabajogrado.domain.Student;
 import co.unicauca.labtrabajogrado.domain.User;
 import co.unicauca.labtrabajogrado.domain.enumPrograma;
 import co.unicauca.labtrabajogrado.domain.enumRol;
 import co.unicauca.labtrabajogrado.service.Service;
+import co.unicauca.labtrabajogrado.utility.EmailValidator;
+import co.unicauca.labtrabajogrado.utility.PasswordUtils;
 import java.util.Arrays;
 import javax.swing.JOptionPane;
 
@@ -19,14 +23,16 @@ import javax.swing.JOptionPane;
  */
 public class GuiRegister extends javax.swing.JFrame {
     
-    private Service service;
+     private Service service;
+     IUserRepositorio  userRepository;
 
     /**
      * Creates new form GuiRegister
      */
     public GuiRegister() {
         initComponents();
-        this.service = new Service();
+        userRepository=Factory.getInstance().getRepository("default");
+        this.service = new Service(userRepository);
          comboBoxPrograma.setModel(new javax.swing.DefaultComboBoxModel<>(
         Arrays.stream(enumPrograma.values())
               .map(Enum::name) 
@@ -125,6 +131,11 @@ public class GuiRegister extends javax.swing.JFrame {
         btnRegistrar.setForeground(new java.awt.Color(255, 51, 153));
         btnRegistrar.setText("REGISTRAR");
         btnRegistrar.setBorder(new javax.swing.border.MatteBorder(null));
+        btnRegistrar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnRegistrarMouseClicked(evt);
+            }
+        });
         btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRegistrarActionPerformed(evt);
@@ -150,13 +161,13 @@ public class GuiRegister extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(LabelRol, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(LabelApellidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(LabelNombres, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(LabelCelular, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(LabelEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(LabelContrasenia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(LabelPrograma, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(LabelPrograma, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(LabelRol, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(LabelEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(54, 54, 54)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(comboBoxPrograma, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -224,7 +235,42 @@ public class GuiRegister extends javax.swing.JFrame {
     }//GEN-LAST:event_comboBoxProgramaActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-         try {
+//         try {
+//        String nombres = txtNombres.getText();
+//        String apellidos = txtApellidos.getText();
+//        String celular = txtCelular.getText();
+//        String seleccionadoPrograma = comboBoxPrograma.getSelectedItem().toString();
+//        enumPrograma programa = enumPrograma.valueOf(seleccionadoPrograma);
+//
+//        // Convertir String a enumRol
+//        String seleccionadoRol = comboBoxRol.getSelectedItem().toString();
+//        enumRol rol = enumRol.valueOf(seleccionadoRol);  
+//        String email = txtEmail.getText();
+//        String contrasenia = new String(txtContrasenia.getPassword());
+//
+//        User nuevoUsuario = new User(nombres, apellidos, celular, programa, rol, email, contrasenia);
+//             JOptionPane.showMessageDialog(this, nuevoUsuario.toString());
+//        boolean exito = service.registrarUsuario(nuevoUsuario);
+//
+//        if (exito) {
+//            JOptionPane.showMessageDialog(this, "Usuario registrado con éxito!");
+//        } else {
+//            JOptionPane.showMessageDialog(this, "Error en el registro. Verifique los datos.");
+//        }
+//
+//    } catch (Exception ex) {
+//        JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+//    }
+    }//GEN-LAST:event_btnRegistrarActionPerformed
+
+    private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
+        GuiLogin login = new GuiLogin(); 
+        login.setVisible(true);
+        this.dispose(); 
+    }//GEN-LAST:event_btnIniciarSesionActionPerformed
+
+    private void btnRegistrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegistrarMouseClicked
+                 try {
         String nombres = txtNombres.getText();
         String apellidos = txtApellidos.getText();
         String celular = txtCelular.getText();
@@ -238,10 +284,28 @@ public class GuiRegister extends javax.swing.JFrame {
         String contrasenia = new String(txtContrasenia.getPassword());
 
         User nuevoUsuario = new User(nombres, apellidos, celular, programa, rol, email, contrasenia);
+        if (!EmailValidator.esCorreoInstitucional(nuevoUsuario.getEmail())) {
+            JOptionPane.showMessageDialog(this, 
+                "El dominio del correo debe ser @unicauca.edu.co");
+            return; // salir si no cumple
+        }
+
+        // Validar contraseña
+        if (!PasswordUtils.validarContrasenia(nuevoUsuario.getContraseña())) {
+            JOptionPane.showMessageDialog(this, 
+                "La contraseña debe cumplir con los siguientes requisitos:\n" +
+                "- Al menos 6 caracteres\n" +
+                "- Al menos una letra mayúscula\n" +
+                "- Al menos un número\n" +
+                "- Al menos un carácter especial (@#$%^&+=!¿?.,;:_-)\n" +
+                "- No debe contener espacios");
+            return; // salir si no cumple
+        }
 
         boolean exito = service.registrarUsuario(nuevoUsuario);
 
         if (exito) {
+            
             JOptionPane.showMessageDialog(this, "Usuario registrado con éxito!");
         } else {
             JOptionPane.showMessageDialog(this, "Error en el registro. Verifique los datos.");
@@ -250,13 +314,7 @@ public class GuiRegister extends javax.swing.JFrame {
     } catch (Exception ex) {
         JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
     }
-    }//GEN-LAST:event_btnRegistrarActionPerformed
-
-    private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
-        GuiLogin login = new GuiLogin(); 
-        login.setVisible(true);
-        this.dispose(); 
-    }//GEN-LAST:event_btnIniciarSesionActionPerformed
+    }//GEN-LAST:event_btnRegistrarMouseClicked
 
     /**
      * @param args the command line arguments

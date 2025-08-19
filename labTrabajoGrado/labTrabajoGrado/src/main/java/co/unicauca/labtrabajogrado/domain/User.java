@@ -23,6 +23,11 @@ public class User extends Persona{
          this.programa = programa;
         
     }
+
+    @Override
+    public String toString() {
+        return "User{" + "email=" + email + ", rol=" + rol + ", programa=" + programa + '}';
+    }
     public User(String email, String contraseña,enumRol rol, enumPrograma programa) {
         this.email = email;
         this.contraseña = contraseña;

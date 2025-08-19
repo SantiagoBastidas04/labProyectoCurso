@@ -23,6 +23,7 @@ public class UserRepositorio implements IUserRepositorio{
     private Connection conn;
     
     public UserRepositorio(){
+        connect();        
         initDatabase();
     }
     
@@ -46,6 +47,7 @@ public class UserRepositorio implements IUserRepositorio{
             pstmt.executeUpdate();
         return true;
         } catch (SQLException ex) {
+            ex.printStackTrace();
             Logger.getLogger(Service.class.getName());
         }
         return false;
@@ -96,7 +98,7 @@ public class UserRepositorio implements IUserRepositorio{
 
         // SQLite connection string
         //String url = "jdbc:sqlite:./mydatabase.db";
-        String url = "jdbc:sqlite::memory:";
+        String url = "jdbc:sqlite:database.db";
 
         try {
             conn = DriverManager.getConnection(url);

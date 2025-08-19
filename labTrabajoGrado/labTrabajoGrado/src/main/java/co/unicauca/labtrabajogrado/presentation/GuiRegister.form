@@ -28,13 +28,13 @@
                   <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="LabelRol" min="-2" pref="62" max="-2" attributes="0"/>
                           <Component id="LabelApellidos" alignment="0" max="32767" attributes="0"/>
                           <Component id="LabelNombres" alignment="0" max="32767" attributes="0"/>
                           <Component id="LabelCelular" alignment="0" max="32767" attributes="0"/>
-                          <Component id="LabelEmail" alignment="0" min="-2" pref="62" max="-2" attributes="0"/>
                           <Component id="LabelContrasenia" alignment="0" max="32767" attributes="0"/>
                           <Component id="LabelPrograma" alignment="0" max="32767" attributes="0"/>
+                          <Component id="LabelRol" alignment="0" max="32767" attributes="0"/>
+                          <Component id="LabelEmail" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -305,6 +305,7 @@
         </Property>
       </Properties>
       <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnRegistrarMouseClicked"/>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRegistrarActionPerformed"/>
       </Events>
     </Component>
