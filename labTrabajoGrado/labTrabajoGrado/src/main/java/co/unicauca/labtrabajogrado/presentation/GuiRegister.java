@@ -9,6 +9,7 @@ import co.unicauca.labtrabajogrado.domain.User;
 import co.unicauca.labtrabajogrado.domain.enumPrograma;
 import co.unicauca.labtrabajogrado.domain.enumRol;
 import co.unicauca.labtrabajogrado.service.Service;
+import java.util.Arrays;
 import javax.swing.JOptionPane;
 
 
@@ -25,6 +26,19 @@ public class GuiRegister extends javax.swing.JFrame {
      */
     public GuiRegister() {
         initComponents();
+        this.service = new Service();
+         comboBoxPrograma.setModel(new javax.swing.DefaultComboBoxModel<>(
+        Arrays.stream(enumPrograma.values())
+              .map(Enum::name) 
+              .toArray(String[]::new)
+    ));
+
+    
+    comboBoxRol.setModel(new javax.swing.DefaultComboBoxModel<>(
+        Arrays.stream(enumRol.values())
+              .map(Enum::name)
+              .toArray(String[]::new)
+    ));
     }
 
     /**
@@ -57,23 +71,27 @@ public class GuiRegister extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         txtRegistro.setBackground(new java.awt.Color(0, 0, 51));
+        txtRegistro.setFont(new java.awt.Font("Arial Black", 3, 14)); // NOI18N
         txtRegistro.setForeground(new java.awt.Color(102, 102, 255));
         txtRegistro.setText("Registrar Usuario");
         txtRegistro.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 51, 51), new java.awt.Color(0, 51, 51), new java.awt.Color(0, 51, 51), new java.awt.Color(0, 51, 51)));
 
         LabelNombres.setBackground(new java.awt.Color(153, 255, 51));
+        LabelNombres.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         LabelNombres.setText("Nombres :");
         LabelNombres.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         LabelApellidos.setBackground(new java.awt.Color(153, 255, 51));
+        LabelApellidos.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         LabelApellidos.setText("Apellidos :");
         LabelApellidos.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         LabelPrograma.setBackground(new java.awt.Color(153, 255, 51));
+        LabelPrograma.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         LabelPrograma.setText("Programa :");
         LabelPrograma.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        comboBoxPrograma.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "INGENIERIA_SISTEMAS,", "INGENIERIA_ELECTRONICA_TELECOMUNICACIONES,", "AUTOMATICA_INDUSTRIAL,", "TECNOLOGIA_TELEMATICA" }));
+        comboBoxPrograma.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "INGENIERIA_SISTEMAS", "INGENIERIA_ELECTRONICA_TELECOMUNICACIONES", "AUTOMATICA_INDUSTRIAL", "TECNOLOGIA_TELEMATICA" }));
         comboBoxPrograma.setToolTipText("");
         comboBoxPrograma.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -82,23 +100,28 @@ public class GuiRegister extends javax.swing.JFrame {
         });
 
         LabelCelular.setBackground(new java.awt.Color(153, 255, 51));
+        LabelCelular.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         LabelCelular.setText("Celular :");
         LabelCelular.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         LabelContrasenia.setBackground(new java.awt.Color(153, 255, 51));
+        LabelContrasenia.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         LabelContrasenia.setText(" Contraseña :");
         LabelContrasenia.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         comboBoxRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Estudiante", "Profesor" }));
 
         LabelRol.setBackground(new java.awt.Color(153, 255, 51));
+        LabelRol.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         LabelRol.setText("Rol :");
         LabelRol.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         LabelEmail.setBackground(new java.awt.Color(153, 255, 51));
+        LabelEmail.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         LabelEmail.setText("Email :");
         LabelEmail.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
+        btnRegistrar.setFont(new java.awt.Font("Century Gothic", 2, 14)); // NOI18N
         btnRegistrar.setForeground(new java.awt.Color(255, 51, 153));
         btnRegistrar.setText("REGISTRAR");
         btnRegistrar.setBorder(new javax.swing.border.MatteBorder(null));
@@ -108,7 +131,8 @@ public class GuiRegister extends javax.swing.JFrame {
             }
         });
 
-        btnIniciarSesion.setForeground(new java.awt.Color(102, 255, 51));
+        btnIniciarSesion.setFont(new java.awt.Font("Century Gothic", 2, 14)); // NOI18N
+        btnIniciarSesion.setForeground(new java.awt.Color(102, 102, 255));
         btnIniciarSesion.setText("Iniciar Sesion");
         btnIniciarSesion.setBorder(new javax.swing.border.MatteBorder(null));
         btnIniciarSesion.addActionListener(new java.awt.event.ActionListener() {
@@ -127,29 +151,30 @@ public class GuiRegister extends javax.swing.JFrame {
                         .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(LabelRol, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(LabelApellidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(LabelNombres, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(LabelCelular, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(LabelApellidos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(LabelNombres, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(LabelCelular, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(LabelEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(LabelContrasenia, javax.swing.GroupLayout.DEFAULT_SIZE, 77, Short.MAX_VALUE)
+                            .addComponent(LabelContrasenia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(LabelPrograma, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(54, 54, 54)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(comboBoxPrograma, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtRegistro)
                             .addComponent(comboBoxRol, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtNombres)
                             .addComponent(txtApellidos)
                             .addComponent(txtCelular)
                             .addComponent(txtEmail)
-                            .addComponent(txtContrasenia)))
+                            .addComponent(txtContrasenia)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(55, 55, 55)
+                                .addComponent(txtRegistro))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(120, 120, 120)
-                        .addComponent(btnRegistrar)
-                        .addGap(95, 95, 95)
-                        .addComponent(btnIniciarSesion)))
-                .addContainerGap(51, Short.MAX_VALUE))
+                        .addGap(108, 108, 108)
+                        .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(55, 55, 55)
+                        .addComponent(btnIniciarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -184,11 +209,11 @@ public class GuiRegister extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(LabelContrasenia, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtContrasenia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnRegistrar)
-                    .addComponent(btnIniciarSesion))
-                .addContainerGap(15, Short.MAX_VALUE))
+                    .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnIniciarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(15, 15, 15))
         );
 
         pack();
@@ -203,8 +228,12 @@ public class GuiRegister extends javax.swing.JFrame {
         String nombres = txtNombres.getText();
         String apellidos = txtApellidos.getText();
         String celular = txtCelular.getText();
-        enumPrograma programa = (enumPrograma) comboBoxPrograma.getSelectedItem(); 
-        enumRol rol = (enumRol) comboBoxRol.getSelectedItem(); 
+        String seleccionadoPrograma = comboBoxPrograma.getSelectedItem().toString();
+        enumPrograma programa = enumPrograma.valueOf(seleccionadoPrograma);
+
+        // Convertir String a enumRol
+        String seleccionadoRol = comboBoxRol.getSelectedItem().toString();
+        enumRol rol = enumRol.valueOf(seleccionadoRol);  
         String email = txtEmail.getText();
         String contrasenia = new String(txtContrasenia.getPassword());
 

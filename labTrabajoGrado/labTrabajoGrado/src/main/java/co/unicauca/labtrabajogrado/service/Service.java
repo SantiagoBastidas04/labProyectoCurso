@@ -14,6 +14,10 @@ import co.unicauca.labtrabajogrado.utility.*;
 public class Service {
     private IUserRepositorio repositorio;
 
+    public Service() {
+    }
+    
+
     public Service(IUserRepositorio repositorio) {
         this.repositorio = repositorio;
     }
