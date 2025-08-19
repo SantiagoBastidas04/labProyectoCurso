@@ -134,9 +134,14 @@ public class GuiLogin extends javax.swing.JFrame {
            /*Implementar la interfaz de Estudiante */
            if (newUser.getRol() == enumRol.Estudiante) {
                 JOptionPane.showMessageDialog(this, "Estudiante");
+                GuiEstudiante estudiante = new GuiEstudiante();
+                estudiante.setVisible(true);
+                this.dispose();
             } else if (newUser.getRol() == enumRol.Profesor) {
                 /*Implementar la interfaz de Profesor */
                 JOptionPane.showMessageDialog(this, "Profesor");
+                GuiProfesor profesor = new GuiProfesor();
+                profesor.setVisible(true);
             }
         else{
            JOptionPane.showMessageDialog(this, 
