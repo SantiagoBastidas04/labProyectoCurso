@@ -5,6 +5,7 @@
 package co.unicauca.labtrabajogrado.access;
 
 import co.unicauca.labtrabajogrado.domain.User;
+import co.unicauca.labtrabajogrado.domain.enumRol;
 import java.security.Provider.Service;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -58,7 +59,7 @@ public class UserRepositorio implements IUserRepositorio{
          if (email == null || email.isBlank() || contrasenia == null || contrasenia.isBlank()) {
             return null;
         }
-        String sql = "SELECT email, contrasenia FROM Usuario WHERE email = ? AND contrasenia = ?";
+        String sql = "SELECT email, contrasenia,rol FROM Usuario WHERE email = ? AND contrasenia = ?";
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, email);
         pstmt.setString(2, contrasenia); 
@@ -69,6 +70,11 @@ public class UserRepositorio implements IUserRepositorio{
             User usuario = new User();
             usuario.setEmail(rs.getString("email"));
             usuario.setContraseña(rs.getString("contrasenia")); 
+           String rolStr = rs.getString("rol"); // <- viene de la BD como String
+            if (rolStr != null) {
+                usuario.setRol(enumRol.valueOf(rolStr)); // convierte String -> enumRol
+            }
+            
             return usuario;
         }
     } catch (SQLException ex) {

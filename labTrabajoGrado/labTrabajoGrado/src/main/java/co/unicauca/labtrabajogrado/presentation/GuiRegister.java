@@ -24,15 +24,16 @@ import javax.swing.JOptionPane;
 public class GuiRegister extends javax.swing.JFrame {
     
      private Service service;
-     IUserRepositorio  userRepository;
+      static IUserRepositorio  userRepository;
 
     /**
      * Creates new form GuiRegister
      */
-    public GuiRegister() {
+    public GuiRegister(IUserRepositorio  userRepository) {
         initComponents();
-        userRepository=Factory.getInstance().getRepository("default");
         this.service = new Service(userRepository);
+        this.userRepository=userRepository;
+        
          comboBoxPrograma.setModel(new javax.swing.DefaultComboBoxModel<>(
         Arrays.stream(enumPrograma.values())
               .map(Enum::name) 
@@ -346,7 +347,7 @@ public class GuiRegister extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GuiRegister().setVisible(true);
+                new GuiRegister(userRepository).setVisible(true);
             }
         });
     }

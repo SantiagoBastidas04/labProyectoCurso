@@ -4,17 +4,29 @@
  */
 package co.unicauca.labtrabajogrado.presentation;
 
+import co.unicauca.labtrabajogrado.access.Factory;
+import co.unicauca.labtrabajogrado.access.IUserRepositorio;
+import co.unicauca.labtrabajogrado.domain.User;
+import co.unicauca.labtrabajogrado.domain.enumRol;
+import co.unicauca.labtrabajogrado.service.Service;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+
 /**
  *
  * @author Acer
  */
 public class GuiLogin extends javax.swing.JFrame {
-
+    private Service service;
+    IUserRepositorio  userRepository;
+    
     /**
      * Creates new form GuiLogin
      */
     public GuiLogin() {
         initComponents();
+        userRepository=Factory.getInstance().getRepository("default");
+        this.service = new Service(userRepository);
     }
 
     /**
@@ -30,24 +42,20 @@ public class GuiLogin extends javax.swing.JFrame {
         labelCorreo = new javax.swing.JLabel();
         txtCorreo = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        txtContrasenia = new javax.swing.JTextField();
         btnIniciarSesion = new javax.swing.JButton();
         btnRegistrarse = new javax.swing.JButton();
+        txtContrasenia = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        labelIniciarSesion.setText("Iniciar Sesion");
+        labelIniciarSesion.setText("         Iniciar Sesion");
 
         labelCorreo.setText("Correo :");
 
         jLabel1.setText("Contraseña : ");
 
-        txtContrasenia.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtContraseniaActionPerformed(evt);
-            }
-        });
-
+        btnIniciarSesion.setBackground(new java.awt.Color(51, 255, 0));
+        btnIniciarSesion.setFont(new java.awt.Font("Constantia", 1, 18)); // NOI18N
         btnIniciarSesion.setText("Iniciar Sesion");
         btnIniciarSesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -55,6 +63,8 @@ public class GuiLogin extends javax.swing.JFrame {
             }
         });
 
+        btnRegistrarse.setBackground(new java.awt.Color(204, 51, 0));
+        btnRegistrarse.setFont(new java.awt.Font("Constantia", 1, 18)); // NOI18N
         btnRegistrarse.setText("Registrarse");
         btnRegistrarse.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -69,40 +79,42 @@ public class GuiLogin extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(148, 148, 148)
-                        .addComponent(labelIniciarSesion))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(44, 44, 44)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labelCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addGap(92, 92, 92)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(txtContrasenia, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(labelCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(102, 102, 102)
-                                .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtContrasenia, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
+                            .addComponent(txtCorreo)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(69, 69, 69)
-                        .addComponent(btnIniciarSesion)
-                        .addGap(62, 62, 62)
-                        .addComponent(btnRegistrarse)))
-                .addContainerGap(81, Short.MAX_VALUE))
+                        .addGap(120, 120, 120)
+                        .addComponent(labelIniciarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(69, 69, 69)
+                .addComponent(btnIniciarSesion)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addComponent(btnRegistrarse)
+                .addGap(26, 26, 26))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addComponent(labelIniciarSesion)
+                .addContainerGap()
+                .addComponent(labelIniciarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelCorreo)
                     .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(txtContrasenia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 96, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(txtContrasenia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnIniciarSesion)
                     .addComponent(btnRegistrarse))
@@ -112,16 +124,29 @@ public class GuiLogin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtContraseniaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContraseniaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtContraseniaActionPerformed
-
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
         // TODO add your handling code here:
+        String email = txtCorreo.getText();
+        String contrasenia = new String(txtContrasenia.getPassword());
+        User newUser = service.iniciarSesion(email, contrasenia);
+        if(newUser!=null){
+           JOptionPane.showMessageDialog(this,"Inicio Sesion"); 
+           /*Implementar la interfaz de Estudiante */
+           if (newUser.getRol() == enumRol.Estudiante) {
+                JOptionPane.showMessageDialog(this, "Estudiante");
+            } else if (newUser.getRol() == enumRol.Profesor) {
+                /*Implementar la interfaz de Profesor */
+                JOptionPane.showMessageDialog(this, "Profesor");
+            }
+        else{
+           JOptionPane.showMessageDialog(this, 
+                "Usuario no encontrado"); 
+           } 
+        }
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
 
     private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
-        GuiRegister register = new GuiRegister(); 
+        GuiRegister register = new GuiRegister(userRepository); 
         register.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegistrarseActionPerformed
@@ -167,7 +192,7 @@ public class GuiLogin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel labelCorreo;
     private javax.swing.JLabel labelIniciarSesion;
-    private javax.swing.JTextField txtContrasenia;
+    private javax.swing.JPasswordField txtContrasenia;
     private javax.swing.JTextField txtCorreo;
     // End of variables declaration//GEN-END:variables
 }
