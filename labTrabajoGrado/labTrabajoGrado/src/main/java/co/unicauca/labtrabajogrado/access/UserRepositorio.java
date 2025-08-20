@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  * @author ING-SIS
  */
 public class UserRepositorio implements IUserRepositorio{
-    private Connection conn;
+    Connection conn;
     
     public UserRepositorio(){
         connect();        

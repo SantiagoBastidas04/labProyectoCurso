@@ -53,7 +53,7 @@ public abstract class Persona {
     }
     
     public static String validacionCelular(String celular){
-      return (celular == null && celular.isEmpty()) ? "No tiene" : celular ;
+      return (celular == null || celular.isEmpty()) ? "No tiene" : celular ;
     }
 
 }
