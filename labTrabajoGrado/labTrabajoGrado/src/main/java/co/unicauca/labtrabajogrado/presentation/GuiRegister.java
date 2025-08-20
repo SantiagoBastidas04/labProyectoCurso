@@ -3,20 +3,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package co.unicauca.labtrabajogrado.presentation;
-import co.unicauca.labtrabajogrado.access.Factory;
 import co.unicauca.labtrabajogrado.access.IUserRepositorio;
-import co.unicauca.labtrabajogrado.domain.Professor;
-import co.unicauca.labtrabajogrado.domain.Student;
 import co.unicauca.labtrabajogrado.domain.User;
 import co.unicauca.labtrabajogrado.domain.enumPrograma;
 import co.unicauca.labtrabajogrado.domain.enumRol;
 import co.unicauca.labtrabajogrado.service.Service;
 import co.unicauca.labtrabajogrado.utility.EmailValidator;
 import co.unicauca.labtrabajogrado.utility.PasswordUtils;
-import java.util.Arrays;
-import javax.swing.JOptionPane;
-
-
+import javax.swing.*;
+import java.awt.*;
 /**
  *
  * @author Acer
@@ -29,25 +24,84 @@ public class GuiRegister extends javax.swing.JFrame {
     /**
      * Creates new form GuiRegister
      */
-    public GuiRegister(IUserRepositorio  userRepository) {
-        initComponents();
+     public GuiRegister(IUserRepositorio userRepository) {
+        initComponents(); 
         this.service = new Service(userRepository);
-        this.userRepository=userRepository;
-        
-         comboBoxPrograma.setModel(new javax.swing.DefaultComboBoxModel<>(
-        Arrays.stream(enumPrograma.values())
-              .map(Enum::name) 
-              .toArray(String[]::new)
-    ));
+        this.userRepository = userRepository;
 
-    
-    comboBoxRol.setModel(new javax.swing.DefaultComboBoxModel<>(
-        Arrays.stream(enumRol.values())
-              .map(Enum::name)
-              .toArray(String[]::new)
-    ));
+        setTitle("Registrar Usuario");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(600, 500);
+        setLocationRelativeTo(null);
+
+        getContentPane().removeAll();
+        setLayout(new BorderLayout());
+
+        // ------------------ HEADER ------------------
+        JLabel header = new JLabel("Registrar Usuario", SwingConstants.CENTER);
+        header.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        header.setOpaque(true);
+        header.setBackground(new Color(72, 201, 176));
+        header.setForeground(Color.WHITE);
+        header.setBorder(BorderFactory.createEmptyBorder(15, 10, 15, 10));
+        add(header, BorderLayout.NORTH);
+
+        // ------------------ FORMULARIO ------------------
+        JPanel formPanel = new JPanel(new GridBagLayout());
+        formPanel.setBackground(new Color(245, 245, 245));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        //  Filas del formulario 
+        addRow(formPanel, gbc, 0, new JLabel("Nombres:"), txtNombres);
+        addRow(formPanel, gbc, 1, new JLabel("Apellidos:"), txtApellidos);
+        addRow(formPanel, gbc, 2, new JLabel("Celular:"), txtCelular);
+        addRow(formPanel, gbc, 3, new JLabel("Programa:"), comboBoxPrograma);
+        addRow(formPanel, gbc, 4, new JLabel("Rol:"), comboBoxRol);
+        addRow(formPanel, gbc, 5, new JLabel("Email:"), txtEmail);
+        addRow(formPanel, gbc, 6, new JLabel("Contraseña:"), txtContrasenia);
+
+        // ------------------ BOTONES ------------------
+        JPanel buttonPanel = new JPanel();
+        personalizarBoton(btnRegistrar, new Color(72, 201, 176));
+        personalizarBoton(btnIniciarSesion, new Color(93, 173, 226));
+        buttonPanel.add(btnRegistrar);
+        buttonPanel.add(btnIniciarSesion);
+
+        gbc.gridx = 0;
+        gbc.gridy = 7;
+        gbc.gridwidth = 2;
+        formPanel.add(buttonPanel, gbc);
+
+        add(formPanel, BorderLayout.CENTER);
+
+        // Refrescar
+        revalidate();
+        repaint();
     }
+     private void addRow(JPanel panel, GridBagConstraints gbc, int row,
+        Component label, JComponent field) {
+        label.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        label.setForeground(new Color(60, 60, 60));
 
+        gbc.gridx = 0;
+        gbc.gridy = row;
+        gbc.weightx = 0.3;
+        panel.add(label, gbc);
+
+        gbc.gridx = 1;
+        gbc.weightx = 0.7;
+        panel.add(field, gbc);
+}
+     private void personalizarBoton(JButton boton, Color bgColor) {
+        boton.setBackground(bgColor);
+        boton.setForeground(Color.WHITE);
+        boton.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        boton.setFocusPainted(false);
+        boton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        boton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+}
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -57,7 +111,6 @@ public class GuiRegister extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        txtRegistro = new javax.swing.JLabel();
         LabelNombres = new javax.swing.JLabel();
         LabelApellidos = new javax.swing.JLabel();
         LabelPrograma = new javax.swing.JLabel();
@@ -77,13 +130,6 @@ public class GuiRegister extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        txtRegistro.setBackground(new java.awt.Color(0, 0, 51));
-        txtRegistro.setFont(new java.awt.Font("Arial Black", 3, 14)); // NOI18N
-        txtRegistro.setForeground(new java.awt.Color(102, 102, 255));
-        txtRegistro.setText("Registrar Usuario");
-        txtRegistro.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 51, 51), new java.awt.Color(0, 51, 51), new java.awt.Color(0, 51, 51), new java.awt.Color(0, 51, 51)));
-
-        LabelNombres.setBackground(new java.awt.Color(153, 255, 51));
         LabelNombres.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
         LabelNombres.setText("Nombres :");
         LabelNombres.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -145,8 +191,9 @@ public class GuiRegister extends javax.swing.JFrame {
 
         btnIniciarSesion.setFont(new java.awt.Font("Century Gothic", 2, 14)); // NOI18N
         btnIniciarSesion.setForeground(new java.awt.Color(102, 102, 255));
-        btnIniciarSesion.setText("Iniciar Sesion");
+        btnIniciarSesion.setText("INICIAR SESION");
         btnIniciarSesion.setBorder(new javax.swing.border.MatteBorder(null));
+        btnIniciarSesion.setMaximumSize(new java.awt.Dimension(300, 300));
         btnIniciarSesion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnIniciarSesionActionPerformed(evt);
@@ -170,30 +217,25 @@ public class GuiRegister extends javax.swing.JFrame {
                             .addComponent(LabelRol, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(LabelEmail, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(54, 54, 54)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(comboBoxPrograma, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(comboBoxRol, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtNombres)
-                            .addComponent(txtApellidos)
-                            .addComponent(txtCelular)
-                            .addComponent(txtEmail)
-                            .addComponent(txtContrasenia)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(55, 55, 55)
-                                .addComponent(txtRegistro))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(comboBoxPrograma, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(comboBoxRol, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtNombres, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtApellidos, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtCelular, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtEmail, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtContrasenia, javax.swing.GroupLayout.Alignment.LEADING)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(108, 108, 108)
-                        .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(55, 55, 55)
-                        .addComponent(btnIniciarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(46, Short.MAX_VALUE))
+                        .addGap(66, 66, 66)
+                        .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(37, 37, 37)
+                        .addComponent(btnIniciarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(72, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(txtRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(44, 44, 44)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(LabelNombres, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtNombres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -369,6 +411,5 @@ public class GuiRegister extends javax.swing.JFrame {
     private javax.swing.JPasswordField txtContrasenia;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtNombres;
-    private javax.swing.JLabel txtRegistro;
     // End of variables declaration//GEN-END:variables
 }

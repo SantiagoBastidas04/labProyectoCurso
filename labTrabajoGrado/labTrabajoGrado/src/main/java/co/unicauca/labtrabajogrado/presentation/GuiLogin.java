@@ -9,8 +9,20 @@ import co.unicauca.labtrabajogrado.access.IUserRepositorio;
 import co.unicauca.labtrabajogrado.domain.User;
 import co.unicauca.labtrabajogrado.domain.enumRol;
 import co.unicauca.labtrabajogrado.service.Service;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -25,9 +37,87 @@ public class GuiLogin extends javax.swing.JFrame {
      */
     public GuiLogin() {
         initComponents();
-        userRepository=Factory.getInstance().getRepository("default");
+        userRepository  = Factory.getInstance().getRepository("default");
         this.service = new Service(userRepository);
-    }
+        this.setTitle("Iniciar Sesión");
+        this.setSize(400, 300);
+        this.setLocationRelativeTo(null);
+        this.getContentPane().setBackground(new Color(245, 245, 245)); // Fondo gris claro
+        this.setLayout(new BorderLayout());
+
+        // ====== HEADER ======
+        JPanel header = new JPanel();
+        header.setBackground(new Color(72, 201, 176)); // Verde azulado
+        header.setPreferredSize(new Dimension(400, 60));
+
+        JLabel titulo = new JLabel("Iniciar Sesión", SwingConstants.CENTER);
+        titulo.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        titulo.setForeground(Color.WHITE);
+        header.setLayout(new BorderLayout());
+        header.add(titulo, BorderLayout.CENTER);
+
+        this.add(header, BorderLayout.NORTH);
+
+        // ====== CENTRO ======
+        JPanel centerPanel = new JPanel();
+        centerPanel.setBackground(new Color(245, 245, 245));
+        centerPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.anchor = GridBagConstraints.WEST;
+
+        Font labelsFont = new Font("Segoe UI", Font.BOLD, 14);
+        Color labelColor = new Color(60, 60, 60);
+
+        txtCorreo.setPreferredSize(new Dimension(200, 30));
+        txtContrasenia.setPreferredSize(new Dimension(200, 30));
+        
+        // Label Correo
+        labelCorreo.setFont(labelsFont);
+        labelCorreo.setForeground(labelColor);
+
+        gbc.gridx = 0; gbc.gridy = 0;
+        centerPanel.add(labelCorreo, gbc);
+
+        gbc.gridx = 1;
+        centerPanel.add(txtCorreo, gbc);
+        
+        // Label Contraseña
+        jLabel1.setText("Contraseña: ");
+        jLabel1.setFont(labelsFont);
+        jLabel1.setForeground(labelColor);
+
+        gbc.gridx = 0; gbc.gridy = 1;
+        centerPanel.add(jLabel1, gbc);
+
+        gbc.gridx = 1;
+        centerPanel.add(txtContrasenia, gbc);
+
+        this.add(centerPanel, BorderLayout.CENTER);
+
+        // ====== BOTONES ======
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(new Color(245, 245, 245));
+
+        personalizarBoton(btnIniciarSesion, new Color(72, 201, 176)); // verde suave
+        personalizarBoton(btnRegistrarse, new Color(93, 173, 226));   // azul suave
+
+        buttonPanel.add(btnIniciarSesion);
+        buttonPanel.add(btnRegistrarse);
+
+        this.add(buttonPanel, BorderLayout.SOUTH);
+}
+
+// Método para personalizar botones
+    private void personalizarBoton(JButton boton, Color bgColor) {
+        boton.setBackground(bgColor);
+        boton.setForeground(Color.WHITE);
+        boton.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        boton.setFocusPainted(false);
+        boton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        boton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+}
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -38,7 +128,6 @@ public class GuiLogin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        labelIniciarSesion = new javax.swing.JLabel();
         labelCorreo = new javax.swing.JLabel();
         txtCorreo = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -47,8 +136,6 @@ public class GuiLogin extends javax.swing.JFrame {
         txtContrasenia = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        labelIniciarSesion.setText("         Iniciar Sesion");
 
         labelCorreo.setText("Correo :");
 
@@ -77,19 +164,14 @@ public class GuiLogin extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(44, 44, 44)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(44, 44, 44)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(labelCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addGap(92, 92, 92)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtContrasenia, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
-                            .addComponent(txtCorreo)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(120, 120, 120)
-                        .addComponent(labelIniciarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(labelCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(92, 92, 92)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtContrasenia, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
+                    .addComponent(txtCorreo))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(69, 69, 69)
@@ -101,9 +183,7 @@ public class GuiLogin extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(labelIniciarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
+                .addGap(73, 73, 73)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelCorreo)
                     .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -196,7 +276,6 @@ public class GuiLogin extends javax.swing.JFrame {
     private javax.swing.JButton btnRegistrarse;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel labelCorreo;
-    private javax.swing.JLabel labelIniciarSesion;
     private javax.swing.JPasswordField txtContrasenia;
     private javax.swing.JTextField txtCorreo;
     // End of variables declaration//GEN-END:variables
