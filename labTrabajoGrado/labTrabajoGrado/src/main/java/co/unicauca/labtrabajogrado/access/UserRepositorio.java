@@ -59,7 +59,7 @@ public class UserRepositorio implements IUserRepositorio{
          if (email == null || email.isBlank() || contrasenia == null || contrasenia.isBlank()) {
             return null;
         }
-        String sql = "SELECT email, contrasenia,rol FROM Usuario WHERE email = ? AND contrasenia = ?";
+        String sql = "SELECT email, contrasenia , rol , nombres FROM Usuario WHERE email = ? AND contrasenia = ?";
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.setString(1, email);
         pstmt.setString(2, contrasenia); 
@@ -69,11 +69,13 @@ public class UserRepositorio implements IUserRepositorio{
         if (rs.next()) {
             User usuario = new User();
             usuario.setEmail(rs.getString("email"));
-            usuario.setContraseña(rs.getString("contrasenia")); 
-           String rolStr = rs.getString("rol"); // <- viene de la BD como String
+            usuario.setContraseña(rs.getString("contrasenia"));
+            usuario.setNombre(rs.getString("nombres"));
+            String rolStr = rs.getString("rol"); // <- viene de la BD como String
             if (rolStr != null) {
                 usuario.setRol(enumRol.valueOf(rolStr)); // convierte String -> enumRol
             }
+            
             
             return usuario;
         }

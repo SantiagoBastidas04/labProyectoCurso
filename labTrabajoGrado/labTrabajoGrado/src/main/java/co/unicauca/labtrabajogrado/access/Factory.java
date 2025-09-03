@@ -10,7 +10,7 @@ package co.unicauca.labtrabajogrado.access;
  */
 public class Factory {
     /**
-     * Fabrica que se encarga de instanciar ProductRepository o cualquier otro que
+     * Fabrica que se encarga de instanciar userRepositorio o cualquier otro que
      * se cree en el futuro.
     */
     

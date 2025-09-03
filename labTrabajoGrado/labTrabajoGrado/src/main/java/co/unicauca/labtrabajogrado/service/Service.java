@@ -59,6 +59,4 @@ public class Service {
         return repositorio.iniciarSesion(email, contraseniaCifrada);
     }
 
-    
-    
 }

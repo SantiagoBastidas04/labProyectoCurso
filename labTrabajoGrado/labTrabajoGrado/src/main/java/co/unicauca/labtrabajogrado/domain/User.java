@@ -14,7 +14,10 @@ public class User extends Persona{
     private String contraseña;
     private enumRol rol;
     private enumPrograma programa;
-
+    
+    public User(){
+        
+    }
     public User(String nombre, String apellidos, String celular, enumPrograma programa,enumRol rol,String email,String contraseña){
         super(nombre,apellidos,validacionCelular(celular));
         this.email = email; 
@@ -37,8 +40,7 @@ public class User extends Persona{
     }
     
 
-    public User() {
-    }
+   
     
     public String getEmail() {
         return email;

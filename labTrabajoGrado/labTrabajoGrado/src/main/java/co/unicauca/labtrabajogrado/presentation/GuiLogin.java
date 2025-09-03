@@ -134,6 +134,7 @@ public class GuiLogin extends javax.swing.JFrame {
         btnIniciarSesion = new javax.swing.JButton();
         btnRegistrarse = new javax.swing.JButton();
         txtContrasenia = new javax.swing.JPasswordField();
+        lblImg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -164,6 +165,12 @@ public class GuiLogin extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(69, 69, 69)
+                .addComponent(btnIniciarSesion)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
+                .addComponent(btnRegistrarse)
+                .addGap(26, 26, 26))
+            .addGroup(layout.createSequentialGroup()
                 .addGap(44, 44, 44)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(labelCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -173,12 +180,10 @@ public class GuiLogin extends javax.swing.JFrame {
                     .addComponent(txtContrasenia, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
                     .addComponent(txtCorreo))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(69, 69, 69)
-                .addComponent(btnIniciarSesion)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
-                .addComponent(btnRegistrarse)
-                .addGap(26, 26, 26))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(111, 111, 111))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -194,7 +199,9 @@ public class GuiLogin extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(28, 28, 28)
                         .addComponent(txtContrasenia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 124, Short.MAX_VALUE)
+                .addComponent(lblImg)
+                .addGap(38, 38, 38)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnIniciarSesion)
                     .addComponent(btnRegistrarse))
@@ -205,29 +212,33 @@ public class GuiLogin extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
-        // TODO add your handling code here:
-        String email = txtCorreo.getText();
-        String contrasenia = new String(txtContrasenia.getPassword());
-        User newUser = service.iniciarSesion(email, contrasenia);
-        if(newUser!=null){
-           JOptionPane.showMessageDialog(this,"Inicio Sesion"); 
-           /*Implementar la interfaz de Estudiante */
-           if (newUser.getRol() == enumRol.Estudiante) {
-                JOptionPane.showMessageDialog(this, "Estudiante");
-                GuiEstudiante estudiante = new GuiEstudiante();
-                estudiante.setVisible(true);
-                this.dispose();
-            } else if (newUser.getRol() == enumRol.Profesor) {
-                /*Implementar la interfaz de Profesor */
-                JOptionPane.showMessageDialog(this, "Profesor");
-                GuiProfesor profesor = new GuiProfesor();
-                profesor.setVisible(true);
-            }
-        else{
-           JOptionPane.showMessageDialog(this, 
-                "Usuario no encontrado"); 
-           } 
+      String email = txtCorreo.getText();
+      String contrasenia = new String(txtContrasenia.getPassword());
+
+    User newUser = service.iniciarSesion(email, contrasenia);
+
+    if (newUser != null) {
+        JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso");
+
+        if (newUser.getRol() == enumRol.Estudiante) {
+            JOptionPane.showMessageDialog(this, "Bienvenido Estudiante");
+            GuiEstudiante estudiante = new GuiEstudiante(newUser.getNombre());
+            estudiante.setVisible(true);
+            this.dispose();
+        } else if (newUser.getRol() == enumRol.Profesor) {
+            JOptionPane.showMessageDialog(this, "Bienvenido Profesor");
+            GuiProfesor profesor = new GuiProfesor();
+            profesor.setVisible(true);
+            this.dispose();
         }
+    } else {
+        JOptionPane.showMessageDialog(
+            this, 
+            "Correo o contraseña incorrectos", 
+            "Error de inicio de sesión", 
+            JOptionPane.ERROR_MESSAGE
+        );
+      } 
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
 
     private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
@@ -276,6 +287,7 @@ public class GuiLogin extends javax.swing.JFrame {
     private javax.swing.JButton btnRegistrarse;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel labelCorreo;
+    private javax.swing.JLabel lblImg;
     private javax.swing.JPasswordField txtContrasenia;
     private javax.swing.JTextField txtCorreo;
     // End of variables declaration//GEN-END:variables

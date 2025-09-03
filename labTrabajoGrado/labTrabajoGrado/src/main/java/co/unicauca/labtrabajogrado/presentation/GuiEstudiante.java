@@ -4,17 +4,35 @@
  */
 package co.unicauca.labtrabajogrado.presentation;
 
+import co.unicauca.labtrabajogrado.access.Factory;
+import co.unicauca.labtrabajogrado.access.IUserRepositorio;
+import co.unicauca.labtrabajogrado.domain.User;
+import co.unicauca.labtrabajogrado.service.Service;
+
+
 /**
  *
  * @author Acer
  */
 public class GuiEstudiante extends javax.swing.JFrame {
 
+    private Service service;
+    IUserRepositorio userRepository;
+    public static String nombre;
+
     /**
      * Creates new form GuiEstudiante
      */
-    public GuiEstudiante() {
+    public GuiEstudiante(String nombre) {
         initComponents();
+        userRepository = Factory.getInstance().getRepository("default");
+        this.service = new Service(userRepository);
+        lblUser.setText("BIENVENIDO ESTUDIANTE " + nombre.toUpperCase());
+        
+
+        // Centrar ventana
+        setSize(600, 400);
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -26,27 +44,36 @@ public class GuiEstudiante extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        labelEstudiante = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        lblUser = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        labelEstudiante.setText("PANEL ESTUDIANTE");
+        lblUser.setBackground(new java.awt.Color(204, 255, 204));
+        lblUser.setText("lblUser");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(labelEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(239, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(lblUser, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(104, 104, 104))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(labelEstudiante, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(237, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblUser, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(235, Short.MAX_VALUE))
         );
 
         pack();
@@ -82,12 +109,14 @@ public class GuiEstudiante extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GuiEstudiante().setVisible(true);
+                new GuiEstudiante("").setVisible(true);
             }
-        });
+        }
+        );
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel labelEstudiante;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel lblUser;
     // End of variables declaration//GEN-END:variables
 }
