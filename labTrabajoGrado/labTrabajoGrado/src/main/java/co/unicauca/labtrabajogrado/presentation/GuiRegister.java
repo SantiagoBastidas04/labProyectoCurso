@@ -19,7 +19,7 @@ import java.awt.*;
 public class GuiRegister extends javax.swing.JFrame {
     
      private Service service;
-      static IUserRepositorio  userRepository;
+     static IUserRepositorio  userRepository;
 
     /**
      * Creates new form GuiRegister

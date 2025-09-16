@@ -3,13 +3,20 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package co.unicauca.labtrabajogrado.presentation;
-
+import co.unicauca.labtrabajogrado.access.Factory;
+import co.unicauca.labtrabajogrado.access.IFormatoRepositorio;
+import co.unicauca.labtrabajogrado.access.IUserRepositorio;
+import co.unicauca.labtrabajogrado.domain.FormatoA;
+import co.unicauca.labtrabajogrado.service.Service;
+import co.unicauca.labtrabajogrado.utility.EmailValidator;
 import com.toedter.calendar.JDateChooser;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import static javax.swing.SwingConstants.CENTER;
 
 /**
@@ -17,6 +24,9 @@ import static javax.swing.SwingConstants.CENTER;
  * @author Acer
  */
 public class GuiProfesor extends javax.swing.JFrame {
+    
+    private Service service;
+    static IFormatoRepositorio  formatoRepositorio;
 
     // Declaración de componentes
     private JTextField txtTituloTrabajo, txtDirector, txtCodirector, txtObjetivoGeneral;
@@ -32,6 +42,8 @@ public class GuiProfesor extends javax.swing.JFrame {
      * Creates new form GuiProfesor
      */
     public GuiProfesor() {
+        formatoRepositorio  = Factory.getInstance().getRepositoryFormato("default");
+        this.service = new Service(formatoRepositorio);
         init();
     }
 
@@ -244,6 +256,11 @@ public class GuiProfesor extends javax.swing.JFrame {
 
         pack();
         setLocationRelativeTo(null);
+
+        JButton btnSubir = new JButton("Subir");
+        btnSubir.setBackground(new Color(106, 153, 148));
+        btnSubir.setForeground(Color.WHITE);
+        btnSubir.setFont(btnSubir.getFont().deriveFont(Font.BOLD));
     }
 
     private void toggleCartaAceptacion() {
@@ -266,21 +283,89 @@ public class GuiProfesor extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btnSubir = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        btnSubir.setText("ENVIAR");
+        btnSubir.setToolTipText("");
+        btnSubir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSubirActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(273, Short.MAX_VALUE)
+                .addComponent(btnSubir)
+                .addGap(55, 55, 55))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(256, Short.MAX_VALUE)
+                .addComponent(btnSubir)
+                .addGap(21, 21, 21))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnSubirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSubirActionPerformed
+        // TODO add your handling code here:
+        String titulo = txtTituloTrabajo.getText();
+        String director = txtDirector.getText();
+        String codirector = txtCodirector.getText();
+        String correoEstudiante = txtCorreo.getText();
+        String objetivoGeneral = txtObjetivoGeneral.getText();
+        String objetivosEspecificos = txtObjetivosEspecificos.getText();
+        java.util.Date fecha = dateChooser.getDate();
+        String modalidad = (String) comboModalidad.getSelectedItem();
+        String formatoPdf = txtFormatoPdf.getText();
+        String cartaAceptacion = txtCartaAceptacion.getText();
+        
+        // Convertir java.util.Date a LocalDate
+        LocalDate fechaActual = fecha.toInstant()
+                .atZone(java.time.ZoneId.systemDefault())
+                .toLocalDate();
+        
+        
+
+        // Crear el objeto FormatoA
+        
+        FormatoA formato = new FormatoA(
+                null, // id autogenerado
+                titulo,
+                modalidad,
+                fechaActual,
+                director,
+                codirector,
+                objetivoGeneral,
+                objetivosEspecificos,
+                formatoPdf,
+                cartaAceptacion,
+                correoEstudiante
+        );
+        
+        if (!EmailValidator.esCorreoInstitucional(formato.getEmailEstudiante())) {
+            JOptionPane.showMessageDialog(this, 
+                "El dominio del correo debe ser @unicauca.edu.co");
+            return; // salir si no cumple
+        }
+
+        // Guardar usando el repositorio
+        boolean ok = service.registrarFormato(formato);
+        
+        if (ok) {
+            JOptionPane.showMessageDialog(this, "Formato A guardado correctamente");
+        } else {
+            JOptionPane.showMessageDialog(this, "Error al guardar Formato A", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnSubirActionPerformed
 
     /**
      * @param args the command line arguments
@@ -313,5 +398,6 @@ public class GuiProfesor extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSubir;
     // End of variables declaration//GEN-END:variables
 }

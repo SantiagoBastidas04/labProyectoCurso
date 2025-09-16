@@ -50,4 +50,15 @@ public class Factory {
         return result;
 
     }
+    
+    public IFormatoRepositorio getRepositoryFormato(String type) {
+        IFormatoRepositorio result = null;
+        switch (type) {
+            case "default":
+                result = new FormatoRepositorio();
+                break;
+        }
+        return result;
+    }
+    
 }

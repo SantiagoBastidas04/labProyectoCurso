@@ -3,8 +3,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package co.unicauca.labtrabajogrado.service;
+import co.unicauca.labtrabajogrado.access.IFormatoRepositorio;
 import co.unicauca.labtrabajogrado.access.IUserRepositorio;
 import co.unicauca.labtrabajogrado.access.UserRepositorio;
+import co.unicauca.labtrabajogrado.domain.FormatoA;
 import co.unicauca.labtrabajogrado.domain.User;
 import co.unicauca.labtrabajogrado.utility.*;
 import javax.swing.JOptionPane;
@@ -14,6 +16,7 @@ import javax.swing.JOptionPane;
  */
 public class Service {
     private IUserRepositorio repositorio;
+    private IFormatoRepositorio formatoRepositorio;
 
     public Service() {
     }
@@ -21,6 +24,10 @@ public class Service {
 
     public Service(IUserRepositorio repositorio) {
         this.repositorio = repositorio;
+    }
+    
+    public Service(IFormatoRepositorio repositorio) {
+        this.formatoRepositorio = repositorio;
     }
     
     public boolean registrarUsuario(User newUser){
@@ -57,6 +64,32 @@ public class Service {
         String contraseniaCifrada = PasswordUtils.cifrarSHA256(contrasenia);
 
         return repositorio.iniciarSesion(email, contraseniaCifrada);
+    }
+    
+    public boolean registrarFormato(FormatoA nuevoFormato) {
+
+        if (nuevoFormato == null) {
+            System.out.println("No se puede registrar: FormatoA es null");
+            return false;
+        }
+
+        if (nuevoFormato.getTituloProyecto() == null || nuevoFormato.getTituloProyecto().isBlank() ||
+            nuevoFormato.getModalidad() == null || nuevoFormato.getModalidad().isBlank() ||
+            nuevoFormato.getDirector() == null || nuevoFormato.getDirector().isBlank() ||
+            nuevoFormato.getEmailEstudiante() == null || nuevoFormato.getEmailEstudiante().isBlank() ||
+            nuevoFormato.getFechaActual() == null) {
+            
+            System.out.println("No se puede registrar: faltan campos obligatorios");
+            return false;
+        }
+
+        if (!EmailValidator.esCorreoInstitucional(nuevoFormato.getEmailEstudiante())) {
+            System.out.println("Correo no es institucional");
+            return false;
+        }
+
+        boolean guardado = formatoRepositorio.GuardarFormato(nuevoFormato);
+        return guardado;
     }
 
 }
