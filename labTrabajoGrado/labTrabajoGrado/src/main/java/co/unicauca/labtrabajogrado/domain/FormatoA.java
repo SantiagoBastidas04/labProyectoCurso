@@ -5,7 +5,6 @@
 package co.unicauca.labtrabajogrado.domain;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 /**
  *

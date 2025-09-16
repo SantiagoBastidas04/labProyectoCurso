@@ -9,6 +9,7 @@ package co.unicauca.labtrabajogrado.access;
 import co.unicauca.labtrabajogrado.domain.User;
 import co.unicauca.labtrabajogrado.domain.enumPrograma;
 import co.unicauca.labtrabajogrado.domain.enumRol;
+import java.sql.Connection;
 import org.junit.jupiter.api.*;
 
 
@@ -18,21 +19,22 @@ import static org.junit.jupiter.api.Assertions.*;
 public class UserRepositorioTest {
 
     private UserRepositorio repo;
+    private ConnectionManager conn;
 
     @BeforeEach
     public void setUp() throws Exception {
         // Usar BD en memoria para los tests
-        repo = new UserRepositorio() {
-            @Override
+        ConnectionManager cn = new  ConnectionManager();
+        repo = new UserRepositorio((Connection) conn){
             public void connect() {
                 try {
-                    conn = java.sql.DriverManager.getConnection("jdbc:sqlite::memory:");
+                    conn = (ConnectionManager) java.sql.DriverManager.getConnection("jdbc:sqlite::memory:");
                 } catch (Exception e) {
                     fail("Error conectando a la BD en memoria: " + e.getMessage());
                 }
             }
         };
-        repo.connect();
+        cn.getConnection();
 
         // Inicializar esquema en memoria
         var initMethod = UserRepositorio.class.getDeclaredMethod("initDatabase");
@@ -42,7 +44,7 @@ public class UserRepositorioTest {
 
     @AfterEach
     public void tearDown() {
-        repo.disconnect();
+        
     }
 
     /*

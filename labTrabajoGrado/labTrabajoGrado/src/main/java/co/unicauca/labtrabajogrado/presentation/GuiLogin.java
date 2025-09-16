@@ -6,6 +6,7 @@ package co.unicauca.labtrabajogrado.presentation;
 
 import co.unicauca.labtrabajogrado.access.Factory;
 import co.unicauca.labtrabajogrado.access.IUserRepositorio;
+import co.unicauca.labtrabajogrado.access.ServiceLocator;
 import co.unicauca.labtrabajogrado.domain.User;
 import co.unicauca.labtrabajogrado.domain.enumRol;
 import co.unicauca.labtrabajogrado.service.Service;
@@ -29,7 +30,7 @@ import javax.swing.SwingConstants;
  * @author Acer
  */
 public class GuiLogin extends javax.swing.JFrame {
-    private Service service;
+    private final Service service;
     IUserRepositorio  userRepository;
     
     /**
@@ -37,7 +38,7 @@ public class GuiLogin extends javax.swing.JFrame {
      */
     public GuiLogin() {
         initComponents();
-        userRepository  = Factory.getInstance().getRepository("default");
+        userRepository  = ServiceLocator.getInstance().getUserRepository();
         this.service = new Service(userRepository);
         this.setTitle("Iniciar Sesión");
         this.setSize(400, 300);
@@ -227,7 +228,7 @@ public class GuiLogin extends javax.swing.JFrame {
             this.dispose();
         } else if (newUser.getRol() == enumRol.Profesor) {
             JOptionPane.showMessageDialog(this, "Bienvenido Profesor");
-            GuiProfesor profesor = new GuiProfesor();
+            GuiProfesor profesor = new GuiProfesor(newUser.getRol().name(),newUser.getEmail());
             profesor.setVisible(true);
             this.dispose();
         }
@@ -242,7 +243,7 @@ public class GuiLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
 
     private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
-        GuiRegister register = new GuiRegister(userRepository); 
+        GuiRegister register = new GuiRegister(); 
         register.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegistrarseActionPerformed

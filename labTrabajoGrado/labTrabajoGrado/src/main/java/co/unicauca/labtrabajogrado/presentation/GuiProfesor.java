@@ -25,9 +25,10 @@ import static javax.swing.SwingConstants.CENTER;
  */
 public class GuiProfesor extends javax.swing.JFrame {
     
-    private Service service;
-    static IFormatoRepositorio  formatoRepositorio;
-
+    private final Service service;
+    private static IFormatoRepositorio  formatoRepositorio;
+    public static String email;
+    public static String rol;
     // Declaración de componentes
     private JTextField txtTituloTrabajo, txtDirector, txtCodirector, txtObjetivoGeneral;
     private JTextArea txtObjetivosEspecificos;
@@ -41,13 +42,13 @@ public class GuiProfesor extends javax.swing.JFrame {
     /**
      * Creates new form GuiProfesor
      */
-    public GuiProfesor() {
-        formatoRepositorio  = Factory.getInstance().getRepositoryFormato("default");
+    public GuiProfesor(String rol , String email) {
+        formatoRepositorio  = Factory.getInstance().getFormatoRepository("default");
         this.service = new Service(formatoRepositorio);
-        init();
+        init(rol,email);
     }
 
-    private void init() {
+    private void init(String rol,String email) {
         setTitle("Formato A - Universidad del Cauca");
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -56,11 +57,11 @@ public class GuiProfesor extends javax.swing.JFrame {
         panelHeader.setBackground(new Color(106, 153, 148));
         panelHeader.setBorder(new EmptyBorder(5, 10, 5, 10));
 
-        JLabel lblFormatoA = new JLabel("Formato A");
+        JLabel lblFormatoA = new JLabel("Rol : "+ rol + "  "+"Formato A" );
         lblFormatoA.setForeground(Color.WHITE);
         lblFormatoA.setFont(lblFormatoA.getFont().deriveFont(Font.BOLD, 16f));
 
-        JLabel lblUsuario = new JLabel("Usuario ");
+        JLabel lblUsuario = new JLabel(email);
         lblUsuario.setForeground(Color.WHITE);
         // Icono usuario
         JLabel lblIcono = new JLabel(UIManager.getIcon("OptionPane.informationIcon"));
@@ -245,22 +246,29 @@ public class GuiProfesor extends javax.swing.JFrame {
                                 .addComponent(scrollObjetivos)
                                 .addComponent(cartaPanel)) // cartaPanel se alinea con el scroll, pero solo aparece si es necesario
         );
-
+        JButton btnSubir = new JButton("Subir");
+        btnSubir.setBackground(new Color(106, 153, 148));
+        btnSubir.setForeground(Color.WHITE);
+        btnSubir.setFont(btnSubir.getFont().deriveFont(Font.BOLD));
+        
+        btnSubir.addActionListener(this::btnSubirActionPerformed);
+        
+        JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        bottomPanel.setBackground(Color.WHITE);
+        bottomPanel.add(btnSubir);
         // Contenedor principal
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(panelHeader, BorderLayout.NORTH);
         getContentPane().add(panelLateral, BorderLayout.WEST);
         getContentPane().add(mainPanel, BorderLayout.CENTER);
+        getContentPane().add(bottomPanel, BorderLayout.SOUTH);
 
         toggleCartaAceptacion(); // inicializar visibilidad
 
         pack();
         setLocationRelativeTo(null);
 
-        JButton btnSubir = new JButton("Subir");
-        btnSubir.setBackground(new Color(106, 153, 148));
-        btnSubir.setForeground(Color.WHITE);
-        btnSubir.setFont(btnSubir.getFont().deriveFont(Font.BOLD));
+        
     }
 
     private void toggleCartaAceptacion() {
@@ -394,7 +402,7 @@ public class GuiProfesor extends javax.swing.JFrame {
         }
         //</editor-fold>
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new GuiProfesor().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new GuiProfesor(rol,email).setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

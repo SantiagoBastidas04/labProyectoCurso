@@ -8,7 +8,6 @@ import co.unicauca.labtrabajogrado.domain.User;
 import co.unicauca.labtrabajogrado.domain.enumRol;
 import java.security.Provider.Service;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,10 +20,10 @@ import java.util.logging.Logger;
  * @author ING-SIS
  */
 public class UserRepositorio implements IUserRepositorio{
-    Connection conn;
+    private final Connection conn;
     
-    public UserRepositorio(){
-        connect();        
+    public UserRepositorio(Connection conn){
+        this.conn = conn;
         initDatabase();
     }
     
@@ -99,30 +98,6 @@ public class UserRepositorio implements IUserRepositorio{
             stmt.execute(sql);
         } catch (SQLException ex) {
             Logger.getLogger(UserRepositorio.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public void connect() {
-
-        // SQLite connection string
-        //String url = "jdbc:sqlite:./mydatabase.db";
-        String url = "jdbc:sqlite:database.db";
-
-        try {
-            conn = DriverManager.getConnection(url);
-
-        } catch (SQLException ex) {
-            Logger.getLogger(Service.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public void disconnect() {
-        try {
-            if (conn != null) {
-                conn.close();
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
         }
     }
 }

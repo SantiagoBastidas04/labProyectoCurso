@@ -5,12 +5,7 @@
 package co.unicauca.labtrabajogrado.access;
 
 import co.unicauca.labtrabajogrado.domain.FormatoA;
-
-
-import java.security.Provider;
 import java.sql.Connection;
-import java.sql.DriverManager;
-
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
@@ -21,28 +16,26 @@ import java.util.logging.Logger;
  * @author Acer
  */
 public class FormatoRepositorio implements IFormatoRepositorio{
-    Connection conn;
+    private final Connection conn;
     
-    public FormatoRepositorio(){
-        connect();        
+    public FormatoRepositorio(Connection conn){
+        this.conn = conn;     
         initDatabase();
     }
     
-   
     private void initDatabase() {
     String sql = "CREATE TABLE IF NOT EXISTS FormatoA (" +
             "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
             "tituloProyecto TEXT NOT NULL, " +
             "modalidad TEXT NOT NULL, " +
-            "fechaActual DATE NOT NULL, " +  // LocalDate guardado como texto ISO
+            "fechaActual TEXT NOT NULL, " +  // LocalDate guardado como texto ISO
             "director TEXT NOT NULL, " +
             "codirector TEXT, " +
             "objetivoGeneral TEXT, " +
             "objetivosEspecificos TEXT, " +
             "formatoPdf TEXT, " +
             "rutaCartaAceptacion TEXT, " +
-            "emailEstudiante TEXT NOT NULL, " +
-            "fechaCreacion TEXT NOT NULL" +  // LocalDateTime guardado como texto ISO
+            "emailEstudiante TEXT NOT NULL " +
             ");";
     try (Statement stmt = conn.createStatement()) {
         stmt.execute(sql);
@@ -50,34 +43,11 @@ public class FormatoRepositorio implements IFormatoRepositorio{
         Logger.getLogger(FormatoRepositorio.class.getName()).log(Level.SEVERE, null, ex);
     }
 }
-    
-    public void connect() {
-
-        // SQLite connection string
-        //String url = "jdbc:sqlite:./mydatabase.db";
-        String url = "jdbc:sqlite:database.db";
-
-        try {
-            conn = DriverManager.getConnection(url);
-
-        } catch (SQLException ex) {
-            Logger.getLogger(Provider.Service.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public void disconnect() {
-        try {
-            if (conn != null) {
-                conn.close();
-            }
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
-    }
 
     @Override
     public boolean GuardarFormato(FormatoA formato) {
     if (formato == null) {
+        System.out.println("El formato a guardar no existe o es null");
         return false;
     }
 

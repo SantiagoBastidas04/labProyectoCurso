@@ -25,7 +25,7 @@ public class GuiEstudiante extends javax.swing.JFrame {
      */
     public GuiEstudiante(String nombre) {
         initComponents();
-        userRepository = Factory.getInstance().getRepository("default");
+        userRepository = Factory.getInstance().getUserRepository("default");
         this.service = new Service(userRepository);
         lblUser.setText("BIENVENIDO ESTUDIANTE " + nombre.toUpperCase());
         

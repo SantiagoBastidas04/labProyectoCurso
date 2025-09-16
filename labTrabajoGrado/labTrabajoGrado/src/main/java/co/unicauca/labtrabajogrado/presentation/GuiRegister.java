@@ -4,6 +4,8 @@
  */
 package co.unicauca.labtrabajogrado.presentation;
 import co.unicauca.labtrabajogrado.access.IUserRepositorio;
+import co.unicauca.labtrabajogrado.access.Factory;
+import co.unicauca.labtrabajogrado.access.ServiceLocator;
 import co.unicauca.labtrabajogrado.domain.User;
 import co.unicauca.labtrabajogrado.domain.enumPrograma;
 import co.unicauca.labtrabajogrado.domain.enumRol;
@@ -18,16 +20,13 @@ import java.awt.*;
  */
 public class GuiRegister extends javax.swing.JFrame {
     
-     private Service service;
+     private final Service service;
      static IUserRepositorio  userRepository;
 
-    /**
-     * Creates new form GuiRegister
-     */
-     public GuiRegister(IUserRepositorio userRepository) {
+     public GuiRegister() {
         initComponents(); 
+        this.userRepository = ServiceLocator.getInstance().getUserRepository();
         this.service = new Service(userRepository);
-        this.userRepository = userRepository;
 
         setTitle("Registrar Usuario");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -389,7 +388,7 @@ public class GuiRegister extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GuiRegister(userRepository).setVisible(true);
+                new GuiRegister().setVisible(true);
             }
         });
     }

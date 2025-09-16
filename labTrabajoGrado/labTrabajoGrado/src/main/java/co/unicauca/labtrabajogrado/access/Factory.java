@@ -1,13 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package co.unicauca.labtrabajogrado.access;
-
 /**
  *
  * @author ING-SIS
  */
+
 public class Factory {
     /**
      * Fabrica que se encarga de instanciar userRepositorio o cualquier otro que
@@ -36,26 +32,25 @@ public class Factory {
      * Método que crea una instancia concreta de la jerarquia IUserRepositorio
      *
      * @param type cadena que indica qué tipo de clase hija debe instanciar
-     * @return una clase hija de la abstracción IProductRepository
+     * @return una clase hija de la abstracción IUserRepository
      */
-    public IUserRepositorio getRepository(String type) {
+    public static IUserRepositorio getUserRepository(String type) {
 
         IUserRepositorio result = null;
-
-        switch (type) {
+        switch (type.toLowerCase()) {
             case "default":
-                result = new UserRepositorio();
+                result = new UserRepositorio(ConnectionManager.getConnection());
                 break;
         }
         return result;
 
     }
     
-    public IFormatoRepositorio getRepositoryFormato(String type) {
+    public static IFormatoRepositorio getFormatoRepository(String type) {
         IFormatoRepositorio result = null;
-        switch (type) {
+        switch (type.toLowerCase()) {
             case "default":
-                result = new FormatoRepositorio();
+                result = new FormatoRepositorio(ConnectionManager.getConnection());
                 break;
         }
         return result;

@@ -13,5 +13,4 @@ import co.unicauca.labtrabajogrado.domain.User;
 public interface IUserRepositorio {
     boolean guardar(User usuario);
     User iniciarSesion(String email,String contrasenia);
-    
 }

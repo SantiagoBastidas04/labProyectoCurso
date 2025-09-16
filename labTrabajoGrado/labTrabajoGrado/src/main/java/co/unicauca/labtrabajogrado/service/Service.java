@@ -5,11 +5,9 @@
 package co.unicauca.labtrabajogrado.service;
 import co.unicauca.labtrabajogrado.access.IFormatoRepositorio;
 import co.unicauca.labtrabajogrado.access.IUserRepositorio;
-import co.unicauca.labtrabajogrado.access.UserRepositorio;
 import co.unicauca.labtrabajogrado.domain.FormatoA;
 import co.unicauca.labtrabajogrado.domain.User;
 import co.unicauca.labtrabajogrado.utility.*;
-import javax.swing.JOptionPane;
 /**
  *
 * @author edwin_
@@ -20,7 +18,6 @@ public class Service {
 
     public Service() {
     }
-    
 
     public Service(IUserRepositorio repositorio) {
         this.repositorio = repositorio;

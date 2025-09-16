@@ -12,5 +12,4 @@ import co.unicauca.labtrabajogrado.domain.FormatoA;
  */
 public interface IFormatoRepositorio {
     boolean GuardarFormato(FormatoA formato);
-    
 }
