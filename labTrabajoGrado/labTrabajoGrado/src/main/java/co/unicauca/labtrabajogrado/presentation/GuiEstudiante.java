@@ -6,6 +6,7 @@ package co.unicauca.labtrabajogrado.presentation;
 
 import co.unicauca.labtrabajogrado.access.Factory;
 import co.unicauca.labtrabajogrado.access.IUserRepositorio;
+import co.unicauca.labtrabajogrado.access.ServiceLocator;
 import co.unicauca.labtrabajogrado.domain.User;
 import co.unicauca.labtrabajogrado.service.Service;
 
@@ -25,7 +26,7 @@ public class GuiEstudiante extends javax.swing.JFrame {
      */
     public GuiEstudiante(String nombre) {
         initComponents();
-        userRepository = Factory.getInstance().getUserRepository("default");
+        userRepository = ServiceLocator.getInstance().getUserRepository();
         this.service = new Service(userRepository);
         lblUser.setText("BIENVENIDO ESTUDIANTE " + nombre.toUpperCase());
         

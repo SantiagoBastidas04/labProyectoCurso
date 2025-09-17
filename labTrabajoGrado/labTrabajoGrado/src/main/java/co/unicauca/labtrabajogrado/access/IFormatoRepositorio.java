@@ -14,4 +14,5 @@ import java.util.List;
 public interface IFormatoRepositorio {
     boolean GuardarFormato(FormatoA formato);
      List<FormatoA> listarTodos();
+     List<FormatoA> listarPorEmail(String email);
 }

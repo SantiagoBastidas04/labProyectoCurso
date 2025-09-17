@@ -11,5 +11,6 @@ package co.unicauca.labtrabajogrado.domain;
 public enum enumRol {
     
     Estudiante,
-    Profesor
+    Profesor,
+    Coordinador
 }

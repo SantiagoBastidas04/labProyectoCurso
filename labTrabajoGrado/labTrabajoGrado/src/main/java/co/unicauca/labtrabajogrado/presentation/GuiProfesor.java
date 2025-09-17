@@ -6,6 +6,7 @@ package co.unicauca.labtrabajogrado.presentation;
 import co.unicauca.labtrabajogrado.access.Factory;
 import co.unicauca.labtrabajogrado.access.IFormatoRepositorio;
 import co.unicauca.labtrabajogrado.access.IUserRepositorio;
+import co.unicauca.labtrabajogrado.access.ServiceLocator;
 import co.unicauca.labtrabajogrado.domain.FormatoA;
 import co.unicauca.labtrabajogrado.service.serviceFormatoA;
 import co.unicauca.labtrabajogrado.utility.EmailValidator;
@@ -43,7 +44,7 @@ public class GuiProfesor extends javax.swing.JFrame {
      * Creates new form GuiProfesor
      */
     public GuiProfesor(String rol , String email) {
-        formatoRepositorio  = Factory.getInstance().getFormatoRepository("default");
+        formatoRepositorio  = ServiceLocator.getInstance().getFormatoRepository();
         this.service = new serviceFormatoA(formatoRepositorio);
         init(rol,email);
     }
@@ -90,7 +91,7 @@ public class GuiProfesor extends javax.swing.JFrame {
         comboMenu.addActionListener(e -> {
         String opcion = (String) comboMenu.getSelectedItem();
     if ("Ver Formatos Enviados".equals(opcion)) {
-        new GuiFormatoEnviado(service, "profesor@unicauca.edu.co").setVisible(true);
+        new GuiFormatoEnviado(service, email).setVisible(true);
     }
 });
 

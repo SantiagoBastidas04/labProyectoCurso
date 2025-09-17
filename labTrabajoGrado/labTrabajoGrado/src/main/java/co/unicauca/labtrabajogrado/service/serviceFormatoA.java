@@ -50,4 +50,7 @@ public class serviceFormatoA {
     public List<FormatoA> listarFormatos() {
     return formatoRepositorio.listarTodos(); 
     }
+    public List<FormatoA> listarPorEmail(String email){
+        return formatoRepositorio.listarPorEmail(email);
+    }
 }

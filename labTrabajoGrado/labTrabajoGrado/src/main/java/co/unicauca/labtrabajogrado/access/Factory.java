@@ -38,7 +38,10 @@ public class Factory {
 
         IUserRepositorio result = null;
         switch (type.toLowerCase()) {
-            case "default":
+            case "profesor":
+                result = new UserRepositorio(ConnectionManager.getConnection());
+                break;
+            case "estudiante":
                 result = new UserRepositorio(ConnectionManager.getConnection());
                 break;
         }

@@ -32,13 +32,13 @@ import javax.swing.table.DefaultTableModel;
  */
 public class GuiFormatoEnviado extends javax.swing.JFrame {
 
-       private JTable tablaFormatos;
+    private JTable tablaFormatos;
     private serviceFormatoA service;
-    private String emailProfesor;
+    private static String email;
 
     public GuiFormatoEnviado(serviceFormatoA service, String emailProfesor) {
         this.service = service;
-        this.emailProfesor = emailProfesor;
+        this.email = emailProfesor;
 
         setTitle("Formatos Enviados");
         setSize(800, 400);
@@ -59,7 +59,7 @@ public class GuiFormatoEnviado extends javax.swing.JFrame {
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
         header.add(lblTitulo, BorderLayout.WEST);
 
-        JLabel lblCorreo = new JLabel(emailProfesor);
+        JLabel lblCorreo = new JLabel(email);
         lblCorreo.setForeground(Color.WHITE);
         lblCorreo.setFont(new Font("Arial", Font.PLAIN, 14));
         header.add(lblCorreo, BorderLayout.EAST);
@@ -75,7 +75,7 @@ public class GuiFormatoEnviado extends javax.swing.JFrame {
     }
         
     private void cargarDatos() {
-        List<FormatoA> formatos = service.listarFormatos();
+        List<FormatoA> formatos = service.listarPorEmail(email);
 
         String[] columnas = {"Título", "Modalidad", "Estado", "Observaciones"};
         Object[][] datos = new Object[formatos.size()][4];
@@ -215,7 +215,7 @@ public class GuiFormatoEnviado extends javax.swing.JFrame {
             // service.guardarFormato(new FormatoA("Proyecto 1", "Práctica Profesional", LocalDate.now(), "Director X", ...));
 
             // Llamar a la nueva ventana con datos simulados
-            new GuiFormatoEnviado(service, "profesor@unicauca.edu.co").setVisible(true);
+            new GuiFormatoEnviado(service, email).setVisible(true);
         }
         });
     }

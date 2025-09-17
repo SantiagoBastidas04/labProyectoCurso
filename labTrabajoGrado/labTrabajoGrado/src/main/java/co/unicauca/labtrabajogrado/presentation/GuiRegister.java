@@ -161,7 +161,7 @@ public class GuiRegister extends javax.swing.JFrame {
         LabelContrasenia.setText(" Contraseña :");
         LabelContrasenia.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        comboBoxRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Estudiante", "Profesor" }));
+        comboBoxRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Estudiante", "Profesor", "Coordinador" }));
 
         LabelRol.setBackground(new java.awt.Color(153, 255, 51));
         LabelRol.setFont(new java.awt.Font("Calibri", 1, 14)); // NOI18N
@@ -318,7 +318,6 @@ public class GuiRegister extends javax.swing.JFrame {
         String celular = txtCelular.getText();
         String seleccionadoPrograma = comboBoxPrograma.getSelectedItem().toString();
         enumPrograma programa = enumPrograma.valueOf(seleccionadoPrograma);
-
         // Convertir String a enumRol
         String seleccionadoRol = comboBoxRol.getSelectedItem().toString();
         enumRol rol = enumRol.valueOf(seleccionadoRol);  

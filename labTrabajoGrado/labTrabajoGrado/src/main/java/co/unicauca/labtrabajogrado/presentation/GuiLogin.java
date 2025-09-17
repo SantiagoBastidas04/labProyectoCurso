@@ -231,6 +231,11 @@ public class GuiLogin extends javax.swing.JFrame {
             GuiProfesor profesor = new GuiProfesor(newUser.getRol().name(),newUser.getEmail());
             profesor.setVisible(true);
             this.dispose();
+        } else if (newUser.getRol() == enumRol.Coordinador) {
+            JOptionPane.showMessageDialog(this, "Bienvenido Coordinador");
+            GuiCoordinador coordinador = new GuiCoordinador(newUser.getRol().name(),newUser.getEmail());
+            coordinador.setVisible(true);
+            this.dispose();
         }
     } else {
         JOptionPane.showMessageDialog(
