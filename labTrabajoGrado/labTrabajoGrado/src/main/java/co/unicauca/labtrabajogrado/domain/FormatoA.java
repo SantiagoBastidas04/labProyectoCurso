@@ -21,7 +21,9 @@ public class FormatoA {
     private String objetivosEspecificos;      // Objetivos específicos (puede ser un texto largo)
     private String formatoPdf;                // Ruta o nombre del archivo PDF subido
     private String rutaCartaAceptacion;       // Ruta o nombre del archivo de la carta de aceptación (solo si modalidad == PRACTICA_PROFESIONAL)
-    private String emailEstudiante;              // ID del docente que sube el formato (relación con usuario/docente)
+    private String emailEstudiante; 
+    private String estado;
+// ID del docente que sube el formato (relación con usuario/docente)
     
 
     public FormatoA(Long id, String tituloProyecto, String modalidad, LocalDate fechaActual, String director, String codirector, String objetivoGeneral, String objetivosEspecificos, String formatoPdf, String rutaCartaAceptacion,String emailEstudiante) {
@@ -127,7 +129,12 @@ public class FormatoA {
         this.emailEstudiante = emailEstudiante;
     }
     
+     public String getEstado(){
+        return estado;
+    }
     
- 
+    public void setEstado(String estado){
+        this.estado = estado;
+    }
     
 }

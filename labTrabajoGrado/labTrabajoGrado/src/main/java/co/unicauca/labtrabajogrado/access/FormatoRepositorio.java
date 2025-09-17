@@ -8,6 +8,8 @@ import co.unicauca.labtrabajogrado.domain.FormatoA;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -87,5 +89,37 @@ public class FormatoRepositorio implements IFormatoRepositorio{
         Logger.getLogger(FormatoRepositorio.class.getName()).log(Level.SEVERE, null, ex);
         return false;
     }
+    
+}
+@Override
+public List<FormatoA> listarTodos() {
+    List<FormatoA> lista = new ArrayList<>();
+    String sql = "SELECT * FROM FormatoA";
+
+    try (var stmt = conn.createStatement();
+         var rs = stmt.executeQuery(sql)) {
+
+        while (rs.next()) {
+            FormatoA formato = new FormatoA(
+                rs.getLong("id"),
+                rs.getString("tituloProyecto"),
+                rs.getString("modalidad"),
+                java.time.LocalDate.parse(rs.getString("fechaActual")), // convertir a LocalDate
+                rs.getString("director"),
+                rs.getString("codirector"),
+                rs.getString("objetivoGeneral"),
+                rs.getString("objetivosEspecificos"),
+                rs.getString("formatoPdf"),
+                rs.getString("rutaCartaAceptacion"),
+                rs.getString("emailEstudiante")
+            );
+            lista.add(formato);
+        }
+
+    } catch (SQLException ex) {
+        Logger.getLogger(FormatoRepositorio.class.getName()).log(Level.SEVERE, null, ex);
+    }
+
+    return lista;
 }
 }

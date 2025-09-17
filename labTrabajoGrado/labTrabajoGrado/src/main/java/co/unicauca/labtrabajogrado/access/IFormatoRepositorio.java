@@ -5,6 +5,7 @@
 package co.unicauca.labtrabajogrado.access;
 
 import co.unicauca.labtrabajogrado.domain.FormatoA;
+import java.util.List;
 
 /**
  *
@@ -12,4 +13,5 @@ import co.unicauca.labtrabajogrado.domain.FormatoA;
  */
 public interface IFormatoRepositorio {
     boolean GuardarFormato(FormatoA formato);
+     List<FormatoA> listarTodos();
 }

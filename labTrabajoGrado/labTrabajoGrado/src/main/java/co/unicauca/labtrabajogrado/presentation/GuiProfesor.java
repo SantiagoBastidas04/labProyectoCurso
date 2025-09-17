@@ -7,7 +7,7 @@ import co.unicauca.labtrabajogrado.access.Factory;
 import co.unicauca.labtrabajogrado.access.IFormatoRepositorio;
 import co.unicauca.labtrabajogrado.access.IUserRepositorio;
 import co.unicauca.labtrabajogrado.domain.FormatoA;
-import co.unicauca.labtrabajogrado.service.Service;
+import co.unicauca.labtrabajogrado.service.serviceFormatoA;
 import co.unicauca.labtrabajogrado.utility.EmailValidator;
 import com.toedter.calendar.JDateChooser;
 import javax.swing.*;
@@ -25,7 +25,7 @@ import static javax.swing.SwingConstants.CENTER;
  */
 public class GuiProfesor extends javax.swing.JFrame {
     
-    private final Service service;
+    private final serviceFormatoA service;
     private static IFormatoRepositorio  formatoRepositorio;
     public static String email;
     public static String rol;
@@ -44,7 +44,7 @@ public class GuiProfesor extends javax.swing.JFrame {
      */
     public GuiProfesor(String rol , String email) {
         formatoRepositorio  = Factory.getInstance().getFormatoRepository("default");
-        this.service = new Service(formatoRepositorio);
+        this.service = new serviceFormatoA(formatoRepositorio);
         init(rol,email);
     }
 
@@ -85,9 +85,14 @@ public class GuiProfesor extends javax.swing.JFrame {
         lblMenu.setAlignmentX(Component.CENTER_ALIGNMENT);
         lblMenu.setFont(lblMenu.getFont().deriveFont(Font.BOLD, 16f));
 
-        String[] opciones = {"Seleccione", "Asignar Revisiones", "Consultar/Actualizar Proyectos", "Formato B"};
+         String[] opciones = {"Seleccione", "Asignar Revisiones", "Consultar/Actualizar Proyectos", "Formato B","Ver Formatos Enviados"};
         JComboBox<String> comboMenu = new JComboBox<>(opciones);
-        comboMenu.setAlignmentX(Component.CENTER_ALIGNMENT);
+        comboMenu.addActionListener(e -> {
+        String opcion = (String) comboMenu.getSelectedItem();
+    if ("Ver Formatos Enviados".equals(opcion)) {
+        new GuiFormatoEnviado(service, "profesor@unicauca.edu.co").setVisible(true);
+    }
+});
 
 // 👇👇👇 ESTAS SON LAS LÍNEAS NUEVAS QUE LO HACEN MÁS PEQUEÑO Y ESTÉTICO 👇👇👇
         comboMenu.setFont(comboMenu.getFont().deriveFont(12f)); // Texto más pequeño

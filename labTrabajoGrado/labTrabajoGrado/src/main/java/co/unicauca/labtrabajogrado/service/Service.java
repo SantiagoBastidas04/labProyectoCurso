@@ -14,8 +14,7 @@ import co.unicauca.labtrabajogrado.utility.*;
  */
 public class Service {
     private IUserRepositorio repositorio;
-    private IFormatoRepositorio formatoRepositorio;
-
+ 
     public Service() {
     }
 
@@ -23,9 +22,7 @@ public class Service {
         this.repositorio = repositorio;
     }
     
-    public Service(IFormatoRepositorio repositorio) {
-        this.formatoRepositorio = repositorio;
-    }
+    
     
     public boolean registrarUsuario(User newUser){
         
@@ -63,30 +60,6 @@ public class Service {
         return repositorio.iniciarSesion(email, contraseniaCifrada);
     }
     
-    public boolean registrarFormato(FormatoA nuevoFormato) {
-
-        if (nuevoFormato == null) {
-            System.out.println("No se puede registrar: FormatoA es null");
-            return false;
-        }
-
-        if (nuevoFormato.getTituloProyecto() == null || nuevoFormato.getTituloProyecto().isBlank() ||
-            nuevoFormato.getModalidad() == null || nuevoFormato.getModalidad().isBlank() ||
-            nuevoFormato.getDirector() == null || nuevoFormato.getDirector().isBlank() ||
-            nuevoFormato.getEmailEstudiante() == null || nuevoFormato.getEmailEstudiante().isBlank() ||
-            nuevoFormato.getFechaActual() == null) {
-            
-            System.out.println("No se puede registrar: faltan campos obligatorios");
-            return false;
-        }
-
-        if (!EmailValidator.esCorreoInstitucional(nuevoFormato.getEmailEstudiante())) {
-            System.out.println("Correo no es institucional");
-            return false;
-        }
-
-        boolean guardado = formatoRepositorio.GuardarFormato(nuevoFormato);
-        return guardado;
-    }
+    
 
 }
