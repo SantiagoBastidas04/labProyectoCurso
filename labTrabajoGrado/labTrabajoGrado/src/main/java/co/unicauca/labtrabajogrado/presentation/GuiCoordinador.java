@@ -10,15 +10,22 @@ import co.unicauca.labtrabajogrado.domain.FormatoA;
 import co.unicauca.labtrabajogrado.service.serviceFormatoA;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -26,6 +33,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -33,147 +41,190 @@ import javax.swing.table.DefaultTableModel;
  * @author Acer
  */
 public class GuiCoordinador extends javax.swing.JFrame {
-   private static String rol;
-   private static String email;
-   private final serviceFormatoA service;
-   private static IFormatoRepositorio  formatoRepositorio;
-   private JPanel panelFilas; 
-   private JButton btnEnviar;
+      private static String rol;
+    private static String email;
+    private final serviceFormatoA service;
+    private static IFormatoRepositorio formatoRepositorio;
+    private JTable tablaFormatos;
+    private JButton btnEnviar;
 
     /**
      * Creates new form GuiCoordinador
      */
-    public GuiCoordinador(String rol , String Email) {
-        formatoRepositorio  = ServiceLocator.getInstance().getFormatoRepository();
+    public GuiCoordinador(String rol, String Email) {
+        formatoRepositorio = ServiceLocator.getInstance().getFormatoRepository();
         this.service = new serviceFormatoA(formatoRepositorio);
-        this.rol = rol;
-        this.email = Email;
+        GuiCoordinador.rol = rol;
+        GuiCoordinador.email = Email;
+
+        setTitle("Proyectos de Grado - Evaluación de Proyecto");
+        setSize(800, 400);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
         initComponents(rol);
         cargarDatos();
     }
+
     private void initComponents(String rol) {
-        setTitle("Proyectos de Grado");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 500);
-        setLocationRelativeTo(null);
+        setLayout(new BorderLayout());
 
-        JPanel content = new JPanel(new BorderLayout());
-        content.setBorder(new EmptyBorder(10, 10, 10, 10));
-        setContentPane(content);
+        // Encabezado
+        JPanel header = new JPanel(new BorderLayout());
+        header.setBackground(new Color(90, 150, 150));
 
-        // Barra superior
-        JPanel topBar = new JPanel(new BorderLayout());
-        topBar.setBackground(new Color(184, 216, 210));
-        JLabel lblTitulo = new JLabel("  Proyectos de Grado");
-        lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-        topBar.add(lblTitulo, BorderLayout.WEST);
+        JLabel lblTitulo = new JLabel("Evaluación de Proyecto");
+        lblTitulo.setForeground(Color.WHITE);
+        lblTitulo.setFont(new Font("Arial", Font.BOLD, 16));
+        header.add(lblTitulo, BorderLayout.WEST);
 
-        JLabel lblUser = new JLabel( rol+" ▼ ");
-        lblUser.setFont(new Font("Arial", Font.PLAIN, 14));
-        JPanel userPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        userPanel.setOpaque(false);
-        userPanel.add(lblUser);
-        topBar.add(userPanel, BorderLayout.EAST);
+        JLabel lblCorreo = new JLabel(email + " (" + rol + ")");
+        lblCorreo.setForeground(Color.WHITE);
+        lblCorreo.setFont(new Font("Arial", Font.PLAIN, 14));
+        header.add(lblCorreo, BorderLayout.EAST);
 
-        content.add(topBar, BorderLayout.NORTH);
+        add(header, BorderLayout.NORTH);
 
-        // Panel central
-        JPanel centerPanel = new JPanel(new BorderLayout());
-        JLabel lblEvaluacion = new JLabel("Evaluación de Proyecto");
-        lblEvaluacion.setFont(new Font("Arial", Font.BOLD, 16));
-        lblEvaluacion.setBorder(new EmptyBorder(5, 0, 5, 0));
-        centerPanel.add(lblEvaluacion, BorderLayout.NORTH);
-
-        // Encabezado columnas
-        JPanel header = new JPanel(new GridLayout(1, 5));
-        header.add(new JLabel("Proyecto", SwingConstants.CENTER));
-        header.add(new JLabel("Estado", SwingConstants.CENTER));
-        header.add(new JLabel("Aprobar", SwingConstants.CENTER));
-        header.add(new JLabel("Rechazar", SwingConstants.CENTER));
-        header.add(new JLabel("Observaciones", SwingConstants.CENTER));
-        centerPanel.add(header, BorderLayout.CENTER);
-
-        // Panel filas dinámicas
-        panelFilas = new JPanel();
-        panelFilas.setLayout(new GridLayout(0, 1, 0, 5));
-        JScrollPane scroll = new JScrollPane(panelFilas);
-        centerPanel.add(scroll, BorderLayout.SOUTH);
+        // Tabla
+        tablaFormatos = new JTable();
+        tablaFormatos.setRowHeight(30);
+        JScrollPane scrollPane = new JScrollPane(tablaFormatos);
+        add(scrollPane, BorderLayout.CENTER);
 
         // Botón enviar
         btnEnviar = new JButton("Enviar evaluaciones");
         btnEnviar.setBackground(Color.BLUE);
         btnEnviar.setForeground(Color.WHITE);
-        btnEnviar.setPreferredSize(new Dimension(200, 40));
+        btnEnviar.setFont(new Font("Arial", Font.BOLD, 14));
 
-        JPanel btnPanel = new JPanel();
-        btnPanel.add(btnEnviar);
+        JPanel panelBoton = new JPanel();
+        panelBoton.add(btnEnviar);
+        add(panelBoton, BorderLayout.SOUTH);
 
-        content.add(centerPanel, BorderLayout.CENTER);
-        content.add(btnPanel, BorderLayout.SOUTH);
-
-        // Pie
-        JPanel footer = new JPanel();
-        footer.setBackground(new Color(184, 216, 210));
-        JLabel lblFooter = new JLabel("Universidad del Cauca");
-        lblFooter.setFont(new Font("Arial", Font.PLAIN, 14));
-        footer.add(lblFooter);
-        content.add(footer, BorderLayout.SOUTH);
-
-        setVisible(true);
+        btnEnviar.addActionListener(e -> enviarEvaluaciones());
     }
 
     private void cargarDatos() {
         List<FormatoA> formatos = service.listarFormatos();
-        panelFilas.removeAll();
 
-        for (FormatoA f : formatos) {
-            JPanel fila = new JPanel(new GridLayout(1, 5));
+        String[] columnas = {"Proyecto", "Estado", "Aprobar", "Rechazar", "Observaciones"};
+        Object[][] datos = new Object[formatos.size()][5];
 
-            // columna 1: título
-            JLabel lblTitulo = new JLabel(f.getTituloProyecto(), SwingConstants.CENTER);
-
-            // columna 2: estado coloreado
-            JLabel lblEstado = new JLabel(f.getEstado(), SwingConstants.CENTER);
-            lblEstado.setOpaque(true);
-            String estado = f.getEstado();
-            if ("Aprobado".equalsIgnoreCase(estado)) {
-                lblEstado.setBackground(new Color(0, 128, 0));
-                lblEstado.setForeground(Color.WHITE);
-            } else if ("Rechazado".equalsIgnoreCase(estado)) {
-                lblEstado.setBackground(Color.RED);
-                lblEstado.setForeground(Color.WHITE);
-            } else if ("En revisión".equalsIgnoreCase(estado)) {
-                lblEstado.setBackground(Color.BLUE);
-                lblEstado.setForeground(Color.WHITE);
-            } else {
-                lblEstado.setBackground(Color.WHITE);
-                lblEstado.setForeground(Color.BLACK);
-            }
-
-            // columna 3 y 4: radio buttons
-            ButtonGroup group = new ButtonGroup();
-            JRadioButton rbAprobar = new JRadioButton();
-            JRadioButton rbRechazar = new JRadioButton();
-            rbAprobar.setHorizontalAlignment(SwingConstants.CENTER);
-            rbRechazar.setHorizontalAlignment(SwingConstants.CENTER);
-            group.add(rbAprobar);
-            group.add(rbRechazar);
-
-            // columna 5: observaciones
-            JTextField txtObs = new JTextField();
-
-            fila.add(lblTitulo);
-            fila.add(lblEstado);
-            fila.add(rbAprobar);
-            fila.add(rbRechazar);
-            fila.add(txtObs);
-
-            panelFilas.add(fila);
+        for (int i = 0; i < formatos.size(); i++) {
+            FormatoA f = formatos.get(i);
+            datos[i][0] = f; // Guardamos objeto para acceder luego
+            datos[i][1] = f.getEstado();
+            datos[i][2] = Boolean.FALSE; // Aprobar
+            datos[i][3] = Boolean.FALSE; // Rechazar
+            datos[i][4] = ""; // Observaciones
         }
 
-        panelFilas.revalidate();
-        panelFilas.repaint();
+        DefaultTableModel modelo = new DefaultTableModel(datos, columnas) {
+            @Override
+            public Class<?> getColumnClass(int columnIndex) {
+                if (columnIndex == 2 || columnIndex == 3) return Boolean.class;
+                return Object.class;
+            }
+
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return column >= 2; // solo aprobar/rechazar/observaciones editables
+            }
+        };
+
+        tablaFormatos.setModel(modelo);
+
+        // Render de Proyecto para mostrar el título
+        tablaFormatos.getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer() {
+            @Override
+            protected void setValue(Object value) {
+                if (value instanceof FormatoA) {
+                    setText(((FormatoA) value).getTituloProyecto());
+                } else {
+                    super.setValue(value);
+                }
+            }
+        });
+
+        // Render de Estado con colores
+        tablaFormatos.getColumnModel().getColumn(1).setCellRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                                                           boolean isSelected, boolean hasFocus,
+                                                           int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                String estado = value != null ? value.toString() : "";
+                if ("Aprobado".equalsIgnoreCase(estado)) {
+                    c.setBackground(Color.GREEN);
+                    c.setForeground(Color.WHITE);
+                } else if ("Rechazado".equalsIgnoreCase(estado)) {
+                    c.setBackground(Color.RED);
+                    c.setForeground(Color.WHITE);
+                } else {
+                    c.setBackground(Color.WHITE);
+                    c.setForeground(Color.BLACK);
+                }
+                setHorizontalAlignment(SwingConstants.CENTER);
+                return c;
+            }
+        });
+
+        // Listener para que aprobar y rechazar sean excluyentes por fila
+        modelo.addTableModelListener(e -> {
+            if (e.getColumn() == 2 || e.getColumn() == 3) {
+                int row = e.getFirstRow();
+                Boolean aprobar = (Boolean) modelo.getValueAt(row, 2);
+                Boolean rechazar = (Boolean) modelo.getValueAt(row, 3);
+                if (aprobar && rechazar) {
+                    if (e.getColumn() == 2) modelo.setValueAt(false, row, 3);
+                    else modelo.setValueAt(false, row, 2);
+                }
+            }
+        });
+
+        // Evento clic en Proyecto → abrir PDF
+        tablaFormatos.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int fila = tablaFormatos.rowAtPoint(e.getPoint());
+                int columna = tablaFormatos.columnAtPoint(e.getPoint());
+                if (columna == 0) {
+                    FormatoA f = (FormatoA) modelo.getValueAt(fila, 0);
+                    abrirPDF(f.getFormatoPdf());
+                }
+            }
+        });
     }
+
+    private void abrirPDF(String ruta) {
+        try {
+            File pdf = new File(ruta);
+            if (pdf.exists()) {
+                Desktop.getDesktop().open(pdf);
+            } else {
+                JOptionPane.showMessageDialog(this, "El archivo no existe: " + ruta);
+            }
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "No se pudo abrir el PDF: " + ex.getMessage());
+        }
+    }
+    
+    private void enviarEvaluaciones() {
+        DefaultTableModel modelo = (DefaultTableModel) tablaFormatos.getModel();
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            FormatoA f = (FormatoA) modelo.getValueAt(i, 0);
+            Boolean aprobar = (Boolean) modelo.getValueAt(i, 2);
+            Boolean rechazar = (Boolean) modelo.getValueAt(i, 3);
+            String observaciones = (String) modelo.getValueAt(i, 4);
+
+            
+
+            //llamar service.actualizarEstado(f, aprobar/rechazar, observaciones);
+        }
+
+        JOptionPane.showMessageDialog(this, "Evaluaciones enviadas correctamente.");
+    }
+     
 
     /**
      * This method is called from within the constructor to initialize the form.
