@@ -22,8 +22,10 @@ public class GuiRegister extends javax.swing.JFrame {
     
      private final Service service;
      static IUserRepositorio  userRepository;
+     static GuiLogin login;
 
      public GuiRegister() {
+        login = new GuiLogin();
         initComponents(); 
         this.userRepository = ServiceLocator.getInstance().getUserRepository();
         this.service = new Service(userRepository);
@@ -306,7 +308,7 @@ public class GuiRegister extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
-        GuiLogin login = new GuiLogin(); 
+        
         login.setVisible(true);
         this.dispose(); 
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
@@ -348,6 +350,8 @@ public class GuiRegister extends javax.swing.JFrame {
         if (exito) {
             
             JOptionPane.showMessageDialog(this, "Usuario registrado con éxito!");
+            login.setVisible(true);
+            this.dispose(); 
         } else {
             JOptionPane.showMessageDialog(this, "Error en el registro. Verifique los datos.");
         }

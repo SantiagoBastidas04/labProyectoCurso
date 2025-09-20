@@ -62,11 +62,11 @@ public class GuiCoordinador extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        initComponents(rol);
+        initComponents(rol , email);
         cargarDatos();
     }
 
-    private void initComponents(String rol) {
+    private void initComponents(String rol , String email) {
         setLayout(new BorderLayout());
 
         // Encabezado
@@ -78,7 +78,7 @@ public class GuiCoordinador extends javax.swing.JFrame {
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 16));
         header.add(lblTitulo, BorderLayout.WEST);
 
-        JLabel lblCorreo = new JLabel(email + " (" + rol + ")");
+        JLabel lblCorreo = new JLabel("Rol " +rol.toUpperCase()+" "+ email + " ");
         lblCorreo.setForeground(Color.WHITE);
         lblCorreo.setFont(new Font("Arial", Font.PLAIN, 14));
         header.add(lblCorreo, BorderLayout.EAST);

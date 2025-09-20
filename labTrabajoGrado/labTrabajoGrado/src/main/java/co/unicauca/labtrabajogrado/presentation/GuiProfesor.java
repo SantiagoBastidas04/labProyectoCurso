@@ -31,8 +31,8 @@ public class GuiProfesor extends javax.swing.JFrame {
     public static String email;
     public static String rol;
     // Declaración de componentes
-    private JTextField txtTituloTrabajo, txtDirector, txtCodirector, txtObjetivoGeneral;
-    private JTextArea txtObjetivosEspecificos;
+    private JTextField txtTituloTrabajo, txtDirector, txtCodirector;
+    private JTextArea txtObjetivosEspecificos, txtObjetivoGeneral;
     private JTextField txtFormatoPdf, txtCartaAceptacion;
     private JComboBox<String> comboModalidad;
     private JTextField txtCorreo;
@@ -123,7 +123,7 @@ public class GuiProfesor extends javax.swing.JFrame {
         txtTituloTrabajo = new JTextField(20);
         txtDirector = new JTextField(20);
         txtCodirector = new JTextField(20);
-        txtObjetivoGeneral = new JTextField(20);
+        txtObjetivoGeneral = new JTextArea(4, 20);
         txtCorreo = new JTextField(20);
 
         txtObjetivosEspecificos = new JTextArea(4, 20);

@@ -4,6 +4,8 @@
  */
 package co.unicauca.labtrabajogrado.presentation;
 
+import co.unicauca.labtrabajogrado.access.IFormatoRepositorio;
+import co.unicauca.labtrabajogrado.access.ServiceLocator;
 import co.unicauca.labtrabajogrado.domain.FormatoA;
 import co.unicauca.labtrabajogrado.service.serviceFormatoA;
 import java.awt.BorderLayout;
@@ -33,11 +35,13 @@ import javax.swing.table.DefaultTableModel;
 public class GuiFormatoEnviado extends javax.swing.JFrame {
 
     private JTable tablaFormatos;
+    private IFormatoRepositorio formatoRepositorio;
     private serviceFormatoA service;
     private static String email;
 
     public GuiFormatoEnviado(serviceFormatoA service, String emailProfesor) {
-        this.service = service;
+        formatoRepositorio  = ServiceLocator.getInstance().getFormatoRepository();
+        this.service = new serviceFormatoA(formatoRepositorio);
         this.email = emailProfesor;
 
         setTitle("Formatos Enviados");
