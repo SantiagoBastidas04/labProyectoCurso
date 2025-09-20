@@ -216,14 +216,13 @@ public class GuiLogin extends javax.swing.JFrame {
       String email = txtCorreo.getText();
       String contrasenia = new String(txtContrasenia.getPassword());
 
-    User newUser = service.iniciarSesion(email, contrasenia);
+      User newUser = service.iniciarSesion(email, contrasenia);
 
     if (newUser != null) {
         JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso");
-
         if (newUser.getRol() == enumRol.Estudiante) {
             JOptionPane.showMessageDialog(this, "Bienvenido Estudiante");
-            GuiEstudiante estudiante = new GuiEstudiante(newUser.getNombre());
+            GuiEstudiante estudiante = new GuiEstudiante(3,"pendiente","pendiente",newUser.getNombre());
             estudiante.setVisible(true);
             this.dispose();
         } else if (newUser.getRol() == enumRol.Profesor) {

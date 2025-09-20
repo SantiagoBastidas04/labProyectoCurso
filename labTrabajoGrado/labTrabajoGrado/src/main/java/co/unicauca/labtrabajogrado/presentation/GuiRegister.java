@@ -27,7 +27,7 @@ public class GuiRegister extends javax.swing.JFrame {
      public GuiRegister() {
         login = new GuiLogin();
         initComponents(); 
-        this.userRepository = ServiceLocator.getInstance().getUserRepository();
+        userRepository = ServiceLocator.getInstance().getUserRepository();
         this.service = new Service(userRepository);
 
         setTitle("Registrar Usuario");
