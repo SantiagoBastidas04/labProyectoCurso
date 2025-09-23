@@ -7,9 +7,10 @@ import java.sql.Connection;
 
 public class ServiceLocator {
     // Mantiene las instancias (singletons)
-    private static ServiceLocator instance;
+   private static ServiceLocator instance;
     private static IUserRepositorio userRepository;
     private static IFormatoRepositorio formatoRepository;
+    private static IEvaluacionFormatoRepositorio evaluacionRepository;
     
     private ServiceLocator(){
         init();
@@ -25,6 +26,7 @@ public class ServiceLocator {
         Connection connection = ConnectionManager.getConnection();
         userRepository = new UserRepositorio(connection);
         formatoRepository = new FormatoRepositorio(connection);
+        evaluacionRepository = new EvaluacionFormatoRepositorio(connection);
     }
     
     public IUserRepositorio getUserRepository() {
@@ -33,5 +35,9 @@ public class ServiceLocator {
     
     public IFormatoRepositorio getFormatoRepository() {
         return formatoRepository; // Siempre la misma instancia
+    }
+    
+    public IEvaluacionFormatoRepositorio getEvaluacionRepository(){
+        return evaluacionRepository;
     }
 }

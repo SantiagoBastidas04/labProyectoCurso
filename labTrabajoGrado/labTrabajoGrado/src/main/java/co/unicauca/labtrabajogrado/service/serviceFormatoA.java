@@ -4,7 +4,9 @@
  */
 package co.unicauca.labtrabajogrado.service;
 
+import co.unicauca.labtrabajogrado.access.IEvaluacionFormatoRepositorio;
 import co.unicauca.labtrabajogrado.access.IFormatoRepositorio;
+import co.unicauca.labtrabajogrado.domain.EvaluacionFormato;
 import co.unicauca.labtrabajogrado.domain.FormatoA;
 import co.unicauca.labtrabajogrado.utility.EmailValidator;
 import java.util.List;
@@ -14,10 +16,16 @@ import java.util.List;
  * @author edwin
  */
 public class serviceFormatoA {
-     private IFormatoRepositorio formatoRepositorio;
+      private IFormatoRepositorio formatoRepositorio;
+     private IEvaluacionFormatoRepositorio evaluacionRepositorio;
      
       public serviceFormatoA(IFormatoRepositorio repositorio) {
         this.formatoRepositorio = repositorio;
+    }
+     
+      public serviceFormatoA(IFormatoRepositorio repositorio, IEvaluacionFormatoRepositorio evaluacionRepositorio) {
+        this.formatoRepositorio = repositorio;
+        this.evaluacionRepositorio = evaluacionRepositorio; // ✅ lo inicializamos
     }
      public serviceFormatoA(){
          
@@ -52,5 +60,20 @@ public class serviceFormatoA {
     }
     public List<FormatoA> listarPorEmail(String email){
         return formatoRepositorio.listarPorEmail(email);
+    }
+    
+   public boolean evaluarFormato(EvaluacionFormato evaluacion){
+       return evaluacionRepositorio.guardarEvaluacion(evaluacion);
+   }
+   
+   public List<EvaluacionFormato> obtenerHistorial(Long codigoFormato){
+       return evaluacionRepositorio.listarFormato(codigoFormato);
+   }
+   
+    public EvaluacionFormato obtenerUltimaEvaluacion(Long codigoFormato) {
+        if (evaluacionRepositorio == null) {
+            throw new IllegalStateException("Repositorio de evaluación no inicializado");
+        }
+        return evaluacionRepositorio.obtenerUltimaEvaluacion(codigoFormato);
     }
 }

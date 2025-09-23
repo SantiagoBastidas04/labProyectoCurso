@@ -4,35 +4,31 @@
  */
 package co.unicauca.labtrabajogrado.presentation;
 
+import co.unicauca.labtrabajogrado.access.IEvaluacionFormatoRepositorio;
 import co.unicauca.labtrabajogrado.access.IFormatoRepositorio;
 import co.unicauca.labtrabajogrado.access.ServiceLocator;
+import co.unicauca.labtrabajogrado.domain.EvaluacionFormato;
 import co.unicauca.labtrabajogrado.domain.FormatoA;
+import co.unicauca.labtrabajogrado.domain.enumEstadoProyecto;
 import co.unicauca.labtrabajogrado.service.serviceFormatoA;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Desktop;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -45,20 +41,22 @@ public class GuiCoordinador extends javax.swing.JFrame {
     private static String email;
     private final serviceFormatoA service;
     private static IFormatoRepositorio formatoRepositorio;
+    private static IEvaluacionFormatoRepositorio evaluacionRepositorio;
     private JTable tablaFormatos;
     private JButton btnEnviar;
 
-    /**
-     * Creates new form GuiCoordinador
-     */
     public GuiCoordinador(String rol, String Email) {
+        // Obtener repositorios desde el ServiceLocator
         formatoRepositorio = ServiceLocator.getInstance().getFormatoRepository();
-        this.service = new serviceFormatoA(formatoRepositorio);
+        evaluacionRepositorio = ServiceLocator.getInstance().getEvaluacionRepository();
+
+        // Pasar ambos repositorios al servicio
+        this.service = new serviceFormatoA(formatoRepositorio, evaluacionRepositorio);
         GuiCoordinador.rol = rol;
         GuiCoordinador.email = Email;
 
         setTitle("Proyectos de Grado - Evaluación de Proyecto");
-        setSize(800, 400);
+        setSize(900, 400);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -112,11 +110,15 @@ public class GuiCoordinador extends javax.swing.JFrame {
 
         for (int i = 0; i < formatos.size(); i++) {
             FormatoA f = formatos.get(i);
-            datos[i][0] = f; // Guardamos objeto para acceder luego
-            datos[i][1] = f.getEstado();
-            datos[i][2] = Boolean.FALSE; // Aprobar
-            datos[i][3] = Boolean.FALSE; // Rechazar
-            datos[i][4] = ""; // Observaciones
+            datos[i][0] = f;
+            
+            long codigoFormato = f.getId().intValue();
+            // Consultar la última evaluación (si existe)
+            var ultimaEval = service.obtenerUltimaEvaluacion(codigoFormato);
+            datos[i][1] = ultimaEval != null ? ultimaEval.getEstado().name() : "Pendiente";
+            datos[i][2] = Boolean.FALSE;
+            datos[i][3] = Boolean.FALSE;
+            datos[i][4] = "";
         }
 
         DefaultTableModel modelo = new DefaultTableModel(datos, columnas) {
@@ -134,7 +136,7 @@ public class GuiCoordinador extends javax.swing.JFrame {
 
         tablaFormatos.setModel(modelo);
 
-        // Render de Proyecto para mostrar el título
+        // Render Proyecto → muestra solo el título
         tablaFormatos.getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer() {
             @Override
             protected void setValue(Object value) {
@@ -146,7 +148,7 @@ public class GuiCoordinador extends javax.swing.JFrame {
             }
         });
 
-        // Render de Estado con colores
+        // Render Estado → color según estado
         tablaFormatos.getColumnModel().getColumn(1).setCellRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,
@@ -154,10 +156,10 @@ public class GuiCoordinador extends javax.swing.JFrame {
                                                            int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 String estado = value != null ? value.toString() : "";
-                if ("Aprobado".equalsIgnoreCase(estado)) {
+                if ("APROBADO".equalsIgnoreCase(estado)) {
                     c.setBackground(Color.GREEN);
                     c.setForeground(Color.WHITE);
-                } else if ("Rechazado".equalsIgnoreCase(estado)) {
+                } else if ("RECHAZADO".equalsIgnoreCase(estado)) {
                     c.setBackground(Color.RED);
                     c.setForeground(Color.WHITE);
                 } else {
@@ -169,7 +171,7 @@ public class GuiCoordinador extends javax.swing.JFrame {
             }
         });
 
-        // Listener para que aprobar y rechazar sean excluyentes por fila
+        // Listener para que aprobar y rechazar sean excluyentes
         modelo.addTableModelListener(e -> {
             if (e.getColumn() == 2 || e.getColumn() == 3) {
                 int row = e.getFirstRow();
@@ -208,22 +210,39 @@ public class GuiCoordinador extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "No se pudo abrir el PDF: " + ex.getMessage());
         }
     }
-    
+
     private void enviarEvaluaciones() {
-        DefaultTableModel modelo = (DefaultTableModel) tablaFormatos.getModel();
-        for (int i = 0; i < modelo.getRowCount(); i++) {
-            FormatoA f = (FormatoA) modelo.getValueAt(i, 0);
-            Boolean aprobar = (Boolean) modelo.getValueAt(i, 2);
-            Boolean rechazar = (Boolean) modelo.getValueAt(i, 3);
-            String observaciones = (String) modelo.getValueAt(i, 4);
+    DefaultTableModel modelo = (DefaultTableModel) tablaFormatos.getModel();
+    for (int i = 0; i < modelo.getRowCount(); i++) {
+        FormatoA f = (FormatoA) modelo.getValueAt(i, 0);
+        Boolean aprobar = (Boolean) modelo.getValueAt(i, 2);
+        Boolean rechazar = (Boolean) modelo.getValueAt(i, 3);
+        String observaciones = (String) modelo.getValueAt(i, 4);
 
-            
+        if (aprobar || rechazar) {
+            enumEstadoProyecto estado = aprobar ? enumEstadoProyecto.APROBADO : enumEstadoProyecto.RECHAZADO;
 
-            //llamar service.actualizarEstado(f, aprobar/rechazar, observaciones);
+            // ✅ Convertimos Long -> int
+            long codigoFormato = f.getId().intValue();
+
+            int intento = service.obtenerHistorial(codigoFormato).size() + 1;
+
+            EvaluacionFormato evaluacion = new EvaluacionFormato(
+                    codigoFormato, 
+                    intento,
+                    estado,
+                    observaciones,
+                    java.time.LocalDateTime.now()
+            );
+
+            service.evaluarFormato(evaluacion); // Guarda en BD
+            modelo.setValueAt(estado.name(), i, 1); // Actualiza visualmente
         }
-
-        JOptionPane.showMessageDialog(this, "Evaluaciones enviadas correctamente.");
     }
+
+    JOptionPane.showMessageDialog(this, "Evaluaciones enviadas correctamente.");
+}
+
      
 
     /**
