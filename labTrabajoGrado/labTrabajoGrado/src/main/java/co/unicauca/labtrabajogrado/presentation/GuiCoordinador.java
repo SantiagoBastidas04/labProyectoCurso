@@ -10,6 +10,7 @@ import co.unicauca.labtrabajogrado.access.ServiceLocator;
 import co.unicauca.labtrabajogrado.domain.EvaluacionFormato;
 import co.unicauca.labtrabajogrado.domain.FormatoA;
 import co.unicauca.labtrabajogrado.domain.enumEstadoProyecto;
+import co.unicauca.labtrabajogrado.service.ServiceEvaluacionFormato;
 import co.unicauca.labtrabajogrado.service.serviceFormatoA;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -37,21 +38,23 @@ import javax.swing.table.DefaultTableModel;
  * @author Acer
  */
 public class GuiCoordinador extends javax.swing.JFrame {
-      private static String rol;
+     private static String rol;
     private static String email;
     private final serviceFormatoA service;
+    private final ServiceEvaluacionFormato serviceEvaluacion;
     private static IFormatoRepositorio formatoRepositorio;
     private static IEvaluacionFormatoRepositorio evaluacionRepositorio;
     private JTable tablaFormatos;
     private JButton btnEnviar;
 
     public GuiCoordinador(String rol, String Email) {
-        // Obtener repositorios desde el ServiceLocator
+        
         formatoRepositorio = ServiceLocator.getInstance().getFormatoRepository();
         evaluacionRepositorio = ServiceLocator.getInstance().getEvaluacionRepository();
 
-        // Pasar ambos repositorios al servicio
-        this.service = new serviceFormatoA(formatoRepositorio, evaluacionRepositorio);
+        this.service = new serviceFormatoA(formatoRepositorio);
+        this.serviceEvaluacion = new ServiceEvaluacionFormato(evaluacionRepositorio);
+
         GuiCoordinador.rol = rol;
         GuiCoordinador.email = Email;
 
@@ -60,7 +63,7 @@ public class GuiCoordinador extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        initComponents(rol , email);
+        initComponents(rol, email);
         cargarDatos();
     }
 
@@ -76,7 +79,7 @@ public class GuiCoordinador extends javax.swing.JFrame {
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 16));
         header.add(lblTitulo, BorderLayout.WEST);
 
-        JLabel lblCorreo = new JLabel("Rol " +rol.toUpperCase()+" "+ email + " ");
+        JLabel lblCorreo = new JLabel("Rol " + rol.toUpperCase() + " " + email + " ");
         lblCorreo.setForeground(Color.WHITE);
         lblCorreo.setFont(new Font("Arial", Font.PLAIN, 14));
         header.add(lblCorreo, BorderLayout.EAST);
@@ -111,10 +114,10 @@ public class GuiCoordinador extends javax.swing.JFrame {
         for (int i = 0; i < formatos.size(); i++) {
             FormatoA f = formatos.get(i);
             datos[i][0] = f;
-            
-            long codigoFormato = f.getId().intValue();
-            // Consultar la última evaluación (si existe)
-            var ultimaEval = service.obtenerUltimaEvaluacion(codigoFormato);
+
+            long codigoFormato = f.getId();
+            var ultimaEval = serviceEvaluacion.obtenerUltima(codigoFormato);
+
             datos[i][1] = ultimaEval != null ? ultimaEval.getEstado().name() : "Pendiente";
             datos[i][2] = Boolean.FALSE;
             datos[i][3] = Boolean.FALSE;
@@ -130,13 +133,13 @@ public class GuiCoordinador extends javax.swing.JFrame {
 
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column >= 2; // solo aprobar/rechazar/observaciones editables
+                return column >= 2;
             }
         };
 
         tablaFormatos.setModel(modelo);
 
-        // Render Proyecto → muestra solo el título
+        // Render Proyecto
         tablaFormatos.getColumnModel().getColumn(0).setCellRenderer(new DefaultTableCellRenderer() {
             @Override
             protected void setValue(Object value) {
@@ -148,7 +151,7 @@ public class GuiCoordinador extends javax.swing.JFrame {
             }
         });
 
-        // Render Estado → color según estado
+        // Render Estado con colores
         tablaFormatos.getColumnModel().getColumn(1).setCellRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,
@@ -171,7 +174,6 @@ public class GuiCoordinador extends javax.swing.JFrame {
             }
         });
 
-        // Listener para que aprobar y rechazar sean excluyentes
         modelo.addTableModelListener(e -> {
             if (e.getColumn() == 2 || e.getColumn() == 3) {
                 int row = e.getFirstRow();
@@ -184,7 +186,6 @@ public class GuiCoordinador extends javax.swing.JFrame {
             }
         });
 
-        // Evento clic en Proyecto → abrir PDF
         tablaFormatos.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -219,28 +220,35 @@ public class GuiCoordinador extends javax.swing.JFrame {
         Boolean rechazar = (Boolean) modelo.getValueAt(i, 3);
         String observaciones = (String) modelo.getValueAt(i, 4);
 
-        if (aprobar || rechazar) {
-            enumEstadoProyecto estado = aprobar ? enumEstadoProyecto.APROBADO : enumEstadoProyecto.RECHAZADO;
+        if (Boolean.TRUE.equals(aprobar) || Boolean.TRUE.equals(rechazar)) {
+            enumEstadoProyecto estado = Boolean.TRUE.equals(aprobar)
+                    ? enumEstadoProyecto.APROBADO
+                    : enumEstadoProyecto.RECHAZADO;
 
-            // ✅ Convertimos Long -> int
-            long codigoFormato = f.getId().intValue();
+            
+            List<EvaluacionFormato> historial = serviceEvaluacion.obtenerHistorial(f.getId());
+            int intento = historial.size() + 1;
 
-            int intento = service.obtenerHistorial(codigoFormato).size() + 1;
+            if (intento > 3 && estado == enumEstadoProyecto.RECHAZADO) {
+                JOptionPane.showMessageDialog(this,
+                        "No se puede rechazar más de 3 veces. Proyecto rechazado definitivamente.");
+                continue;
+            }
 
-            EvaluacionFormato evaluacion = new EvaluacionFormato(
-                    codigoFormato, 
-                    intento,
-                    estado,
-                    observaciones,
-                    java.time.LocalDateTime.now()
-            );
+           
+            boolean ok = serviceEvaluacion.evaluarFormato(f, estado, observaciones);
 
-            service.evaluarFormato(evaluacion); // Guarda en BD
-            modelo.setValueAt(estado.name(), i, 1); // Actualiza visualmente
+            if (ok) {
+                modelo.setValueAt(estado.name(), i, 1);
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "No se pudo registrar la evaluación para el proyecto: " + f.getTituloProyecto());
+            }
         }
     }
 
     JOptionPane.showMessageDialog(this, "Evaluaciones enviadas correctamente.");
+    cargarDatos();
 }
 
      
