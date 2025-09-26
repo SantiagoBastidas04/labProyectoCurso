@@ -1,0 +1,54 @@
+-------------------------------------------------------------------------------
+Test set: co.unicauca.labtrabajogrado.access.UserRepositorioTest
+-------------------------------------------------------------------------------
+Tests run: 5, Failures: 0, Errors: 5, Skipped: 0, Time elapsed: 0.054 s <<< FAILURE! -- in co.unicauca.labtrabajogrado.access.UserRepositorioTest
+co.unicauca.labtrabajogrado.access.UserRepositorioTest.testIniciarSesionParametrosInvalidos -- Time elapsed: 0.018 s <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "java.sql.Connection.createStatement()" because "this.conn" is null
+	at co.unicauca.labtrabajogrado.access.UserRepositorio.initDatabase(UserRepositorio.java:97)
+	at co.unicauca.labtrabajogrado.access.UserRepositorio.<init>(UserRepositorio.java:27)
+	at co.unicauca.labtrabajogrado.access.UserRepositorioTest$1.<init>(UserRepositorioTest.java:28)
+	at co.unicauca.labtrabajogrado.access.UserRepositorioTest.setUp(UserRepositorioTest.java:28)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+
+co.unicauca.labtrabajogrado.access.UserRepositorioTest.testGuardarUsuarioInvalido -- Time elapsed: 0.002 s <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "java.sql.Connection.createStatement()" because "this.conn" is null
+	at co.unicauca.labtrabajogrado.access.UserRepositorio.initDatabase(UserRepositorio.java:97)
+	at co.unicauca.labtrabajogrado.access.UserRepositorio.<init>(UserRepositorio.java:27)
+	at co.unicauca.labtrabajogrado.access.UserRepositorioTest$1.<init>(UserRepositorioTest.java:28)
+	at co.unicauca.labtrabajogrado.access.UserRepositorioTest.setUp(UserRepositorioTest.java:28)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+
+co.unicauca.labtrabajogrado.access.UserRepositorioTest.testGuardarUsuarioValido -- Time elapsed: 0.002 s <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "java.sql.Connection.createStatement()" because "this.conn" is null
+	at co.unicauca.labtrabajogrado.access.UserRepositorio.initDatabase(UserRepositorio.java:97)
+	at co.unicauca.labtrabajogrado.access.UserRepositorio.<init>(UserRepositorio.java:27)
+	at co.unicauca.labtrabajogrado.access.UserRepositorioTest$1.<init>(UserRepositorioTest.java:28)
+	at co.unicauca.labtrabajogrado.access.UserRepositorioTest.setUp(UserRepositorioTest.java:28)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+
+co.unicauca.labtrabajogrado.access.UserRepositorioTest.testIniciarSesionExitoso -- Time elapsed: 0.001 s <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "java.sql.Connection.createStatement()" because "this.conn" is null
+	at co.unicauca.labtrabajogrado.access.UserRepositorio.initDatabase(UserRepositorio.java:97)
+	at co.unicauca.labtrabajogrado.access.UserRepositorio.<init>(UserRepositorio.java:27)
+	at co.unicauca.labtrabajogrado.access.UserRepositorioTest$1.<init>(UserRepositorioTest.java:28)
+	at co.unicauca.labtrabajogrado.access.UserRepositorioTest.setUp(UserRepositorioTest.java:28)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+
+co.unicauca.labtrabajogrado.access.UserRepositorioTest.testIniciarSesionFallido -- Time elapsed: 0.001 s <<< ERROR!
+java.lang.NullPointerException: Cannot invoke "java.sql.Connection.createStatement()" because "this.conn" is null
+	at co.unicauca.labtrabajogrado.access.UserRepositorio.initDatabase(UserRepositorio.java:97)
+	at co.unicauca.labtrabajogrado.access.UserRepositorio.<init>(UserRepositorio.java:27)
+	at co.unicauca.labtrabajogrado.access.UserRepositorioTest$1.<init>(UserRepositorioTest.java:28)
+	at co.unicauca.labtrabajogrado.access.UserRepositorioTest.setUp(UserRepositorioTest.java:28)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1597)
+

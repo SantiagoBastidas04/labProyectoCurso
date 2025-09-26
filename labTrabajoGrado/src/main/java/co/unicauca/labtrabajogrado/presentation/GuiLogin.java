@@ -1,0 +1,309 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+package co.unicauca.labtrabajogrado.presentation;
+
+import co.unicauca.labtrabajogrado.access.Factory;
+import co.unicauca.labtrabajogrado.access.IEvaluacionFormatoRepositorio;
+import co.unicauca.labtrabajogrado.access.IFormatoRepositorio;
+import co.unicauca.labtrabajogrado.access.IUserRepositorio;
+import co.unicauca.labtrabajogrado.access.ServiceLocator;
+import co.unicauca.labtrabajogrado.domain.EvaluacionFormato;
+import co.unicauca.labtrabajogrado.domain.User;
+import co.unicauca.labtrabajogrado.domain.enumRol;
+import co.unicauca.labtrabajogrado.service.Service;
+import co.unicauca.labtrabajogrado.service.ServiceEvaluacionFormato;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.util.List;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+
+/**
+ *
+ * @author Acer
+ */
+public class GuiLogin extends javax.swing.JFrame {
+    private final Service service;
+    IUserRepositorio  userRepository;
+    IEvaluacionFormatoRepositorio evaluacionFormatoRepository;
+    private final ServiceEvaluacionFormato serviceEvaluacion;
+    
+    /**
+     * Creates new form GuiLogin
+     */
+    public GuiLogin() {
+        initComponents();
+        userRepository  = ServiceLocator.getInstance().getUserRepository();
+        evaluacionFormatoRepository = ServiceLocator.getInstance().getEvaluacionRepository();
+        this.service = new Service(userRepository);
+        this.serviceEvaluacion = new ServiceEvaluacionFormato(evaluacionFormatoRepository);
+        this.setTitle("Iniciar Sesión");
+        this.setSize(400, 300);
+        this.setLocationRelativeTo(null);
+        this.getContentPane().setBackground(new Color(245, 245, 245)); // Fondo gris claro
+        this.setLayout(new BorderLayout());
+
+        // ====== HEADER ======
+        JPanel header = new JPanel();
+        header.setBackground(new Color(72, 201, 176)); // Verde azulado
+        header.setPreferredSize(new Dimension(400, 60));
+
+        JLabel titulo = new JLabel("Iniciar Sesión", SwingConstants.CENTER);
+        titulo.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        titulo.setForeground(Color.WHITE);
+        header.setLayout(new BorderLayout());
+        header.add(titulo, BorderLayout.CENTER);
+
+        this.add(header, BorderLayout.NORTH);
+
+        // ====== CENTRO ======
+        JPanel centerPanel = new JPanel();
+        centerPanel.setBackground(new Color(245, 245, 245));
+        centerPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.anchor = GridBagConstraints.WEST;
+
+        Font labelsFont = new Font("Segoe UI", Font.BOLD, 14);
+        Color labelColor = new Color(60, 60, 60);
+
+        txtCorreo.setPreferredSize(new Dimension(200, 30));
+        txtContrasenia.setPreferredSize(new Dimension(200, 30));
+        
+        // Label Correo
+        labelCorreo.setFont(labelsFont);
+        labelCorreo.setForeground(labelColor);
+
+        gbc.gridx = 0; gbc.gridy = 0;
+        centerPanel.add(labelCorreo, gbc);
+
+        gbc.gridx = 1;
+        centerPanel.add(txtCorreo, gbc);
+        
+        // Label Contraseña
+        jLabel1.setText("Contraseña: ");
+        jLabel1.setFont(labelsFont);
+        jLabel1.setForeground(labelColor);
+
+        gbc.gridx = 0; gbc.gridy = 1;
+        centerPanel.add(jLabel1, gbc);
+
+        gbc.gridx = 1;
+        centerPanel.add(txtContrasenia, gbc);
+
+        this.add(centerPanel, BorderLayout.CENTER);
+
+        // ====== BOTONES ======
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(new Color(245, 245, 245));
+
+        personalizarBoton(btnIniciarSesion, new Color(72, 201, 176)); // verde suave
+        personalizarBoton(btnRegistrarse, new Color(93, 173, 226));   // azul suave
+
+        buttonPanel.add(btnIniciarSesion);
+        buttonPanel.add(btnRegistrarse);
+
+        this.add(buttonPanel, BorderLayout.SOUTH);
+}
+
+// Método para personalizar botones
+    private void personalizarBoton(JButton boton, Color bgColor) {
+        boton.setBackground(bgColor);
+        boton.setForeground(Color.WHITE);
+        boton.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        boton.setFocusPainted(false);
+        boton.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        boton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+}
+    
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        labelCorreo = new javax.swing.JLabel();
+        txtCorreo = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        btnIniciarSesion = new javax.swing.JButton();
+        btnRegistrarse = new javax.swing.JButton();
+        txtContrasenia = new javax.swing.JPasswordField();
+        lblImg = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        labelCorreo.setText("Correo :");
+
+        jLabel1.setText("Contraseña : ");
+
+        btnIniciarSesion.setBackground(new java.awt.Color(51, 255, 0));
+        btnIniciarSesion.setFont(new java.awt.Font("Constantia", 1, 18)); // NOI18N
+        btnIniciarSesion.setText("Iniciar Sesion");
+        btnIniciarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIniciarSesionActionPerformed(evt);
+            }
+        });
+
+        btnRegistrarse.setBackground(new java.awt.Color(204, 51, 0));
+        btnRegistrarse.setFont(new java.awt.Font("Constantia", 1, 18)); // NOI18N
+        btnRegistrarse.setText("Registrarse");
+        btnRegistrarse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarseActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(69, 69, 69)
+                .addComponent(btnIniciarSesion)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
+                .addComponent(btnRegistrarse)
+                .addGap(26, 26, 26))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(labelCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(92, 92, 92)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(txtContrasenia, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE)
+                    .addComponent(txtCorreo))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblImg, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(111, 111, 111))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(73, 73, 73)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(labelCorreo)
+                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(txtContrasenia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 124, Short.MAX_VALUE)
+                .addComponent(lblImg)
+                .addGap(38, 38, 38)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnIniciarSesion)
+                    .addComponent(btnRegistrarse))
+                .addGap(46, 46, 46))
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
+      String email = txtCorreo.getText();
+      String contrasenia = new String(txtContrasenia.getPassword());
+
+      User newUser = service.iniciarSesion(email, contrasenia);
+
+    if (newUser != null) {
+        JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso");
+        if (newUser.getRol() == enumRol.Estudiante) {
+            JOptionPane.showMessageDialog(this, "Bienvenido Estudiante");
+            GuiEstudiante estudiante = new GuiEstudiante( newUser.getEmail());
+            estudiante.setVisible(true);
+            this.dispose();
+            
+        } else if (newUser.getRol() == enumRol.Profesor) {
+            JOptionPane.showMessageDialog(this, "Bienvenido Profesor");
+            GuiProfesor profesor = new GuiProfesor(newUser.getRol().name(),newUser.getEmail());
+            profesor.setVisible(true);
+            this.dispose();
+        } else if (newUser.getRol() == enumRol.Coordinador) {
+            JOptionPane.showMessageDialog(this, "Bienvenido Coordinador");
+            GuiCoordinador coordinador = new GuiCoordinador(newUser.getRol().name(),newUser.getEmail());
+            coordinador.setVisible(true);
+            this.dispose();
+        }
+    } else {
+        JOptionPane.showMessageDialog(
+            this, 
+            "Correo o contraseña incorrectos", 
+            "Error de inicio de sesión", 
+            JOptionPane.ERROR_MESSAGE
+        );
+      } 
+    }//GEN-LAST:event_btnIniciarSesionActionPerformed
+
+    private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
+        GuiRegister register = new GuiRegister(); 
+        register.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnRegistrarseActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(GuiLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(GuiLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(GuiLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(GuiLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new GuiLogin().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnIniciarSesion;
+    private javax.swing.JButton btnRegistrarse;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel labelCorreo;
+    private javax.swing.JLabel lblImg;
+    private javax.swing.JPasswordField txtContrasenia;
+    private javax.swing.JTextField txtCorreo;
+    // End of variables declaration//GEN-END:variables
+}
