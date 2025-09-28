@@ -9,9 +9,9 @@ package co.unicauca.labtrabajogrado.domain;
  * @author edwin
  */
 public enum enumEstadoProyecto {
-     EN_PRIMERA_EVALUACION,
+    EN_PRIMERA_EVALUACION,
     EN_SEGUNDA_EVALUACION,
     EN_TERCERA_EVALUACION,
-    APROBADO,RECHAZADO,
+    APROBADO,RECHAZADO,Pendiente
 
 }

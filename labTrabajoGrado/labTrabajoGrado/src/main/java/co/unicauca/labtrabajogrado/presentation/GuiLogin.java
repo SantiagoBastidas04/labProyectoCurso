@@ -5,11 +5,15 @@
 package co.unicauca.labtrabajogrado.presentation;
 
 import co.unicauca.labtrabajogrado.access.Factory;
+import co.unicauca.labtrabajogrado.access.IEvaluacionFormatoRepositorio;
+import co.unicauca.labtrabajogrado.access.IFormatoRepositorio;
 import co.unicauca.labtrabajogrado.access.IUserRepositorio;
 import co.unicauca.labtrabajogrado.access.ServiceLocator;
+import co.unicauca.labtrabajogrado.domain.EvaluacionFormato;
 import co.unicauca.labtrabajogrado.domain.User;
 import co.unicauca.labtrabajogrado.domain.enumRol;
 import co.unicauca.labtrabajogrado.service.Service;
+import co.unicauca.labtrabajogrado.service.ServiceEvaluacionFormato;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -18,6 +22,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -32,6 +37,8 @@ import javax.swing.SwingConstants;
 public class GuiLogin extends javax.swing.JFrame {
     private final Service service;
     IUserRepositorio  userRepository;
+    IEvaluacionFormatoRepositorio evaluacionFormatoRepository;
+    private final ServiceEvaluacionFormato serviceEvaluacion;
     
     /**
      * Creates new form GuiLogin
@@ -39,7 +46,9 @@ public class GuiLogin extends javax.swing.JFrame {
     public GuiLogin() {
         initComponents();
         userRepository  = ServiceLocator.getInstance().getUserRepository();
+        evaluacionFormatoRepository = ServiceLocator.getInstance().getEvaluacionRepository();
         this.service = new Service(userRepository);
+        this.serviceEvaluacion = new ServiceEvaluacionFormato(evaluacionFormatoRepository);
         this.setTitle("Iniciar Sesión");
         this.setSize(400, 300);
         this.setLocationRelativeTo(null);
@@ -222,9 +231,10 @@ public class GuiLogin extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso");
         if (newUser.getRol() == enumRol.Estudiante) {
             JOptionPane.showMessageDialog(this, "Bienvenido Estudiante");
-            GuiEstudiante estudiante = new GuiEstudiante(3,"pendiente","pendiente",newUser.getNombre());
+            GuiEstudiante estudiante = new GuiEstudiante( newUser.getEmail());
             estudiante.setVisible(true);
             this.dispose();
+            
         } else if (newUser.getRol() == enumRol.Profesor) {
             JOptionPane.showMessageDialog(this, "Bienvenido Profesor");
             GuiProfesor profesor = new GuiProfesor(newUser.getRol().name(),newUser.getEmail());

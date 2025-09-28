@@ -38,7 +38,8 @@ import javax.swing.table.DefaultTableModel;
  * @author Acer
  */
 public class GuiCoordinador extends javax.swing.JFrame {
-     private static String rol;
+
+    private static String rol;
     private static String email;
     private final serviceFormatoA service;
     private final ServiceEvaluacionFormato serviceEvaluacion;
@@ -48,7 +49,7 @@ public class GuiCoordinador extends javax.swing.JFrame {
     private JButton btnEnviar;
 
     public GuiCoordinador(String rol, String Email) {
-        
+
         formatoRepositorio = ServiceLocator.getInstance().getFormatoRepository();
         evaluacionRepositorio = ServiceLocator.getInstance().getEvaluacionRepository();
 
@@ -67,7 +68,7 @@ public class GuiCoordinador extends javax.swing.JFrame {
         cargarDatos();
     }
 
-    private void initComponents(String rol , String email) {
+    private void initComponents(String rol, String email) {
         setLayout(new BorderLayout());
 
         // Encabezado
@@ -106,7 +107,7 @@ public class GuiCoordinador extends javax.swing.JFrame {
     }
 
     private void cargarDatos() {
-        List<FormatoA> formatos = service.listarFormatos();
+        List<FormatoA> formatos = service.listarPendientes();
 
         String[] columnas = {"Proyecto", "Estado", "Aprobar", "Rechazar", "Observaciones"};
         Object[][] datos = new Object[formatos.size()][5];
@@ -127,7 +128,9 @@ public class GuiCoordinador extends javax.swing.JFrame {
         DefaultTableModel modelo = new DefaultTableModel(datos, columnas) {
             @Override
             public Class<?> getColumnClass(int columnIndex) {
-                if (columnIndex == 2 || columnIndex == 3) return Boolean.class;
+                if (columnIndex == 2 || columnIndex == 3) {
+                    return Boolean.class;
+                }
                 return Object.class;
             }
 
@@ -155,8 +158,8 @@ public class GuiCoordinador extends javax.swing.JFrame {
         tablaFormatos.getColumnModel().getColumn(1).setCellRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,
-                                                           boolean isSelected, boolean hasFocus,
-                                                           int row, int column) {
+                    boolean isSelected, boolean hasFocus,
+                    int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 String estado = value != null ? value.toString() : "";
                 if ("APROBADO".equalsIgnoreCase(estado)) {
@@ -180,8 +183,11 @@ public class GuiCoordinador extends javax.swing.JFrame {
                 Boolean aprobar = (Boolean) modelo.getValueAt(row, 2);
                 Boolean rechazar = (Boolean) modelo.getValueAt(row, 3);
                 if (aprobar && rechazar) {
-                    if (e.getColumn() == 2) modelo.setValueAt(false, row, 3);
-                    else modelo.setValueAt(false, row, 2);
+                    if (e.getColumn() == 2) {
+                        modelo.setValueAt(false, row, 3);
+                    } else {
+                        modelo.setValueAt(false, row, 2);
+                    }
                 }
             }
         });
@@ -213,45 +219,44 @@ public class GuiCoordinador extends javax.swing.JFrame {
     }
 
     private void enviarEvaluaciones() {
-    DefaultTableModel modelo = (DefaultTableModel) tablaFormatos.getModel();
-    for (int i = 0; i < modelo.getRowCount(); i++) {
-        FormatoA f = (FormatoA) modelo.getValueAt(i, 0);
-        Boolean aprobar = (Boolean) modelo.getValueAt(i, 2);
-        Boolean rechazar = (Boolean) modelo.getValueAt(i, 3);
-        String observaciones = (String) modelo.getValueAt(i, 4);
+        if (tablaFormatos.isEditing()) {
+            tablaFormatos.getCellEditor().stopCellEditing();
+        }
+        DefaultTableModel modelo = (DefaultTableModel) tablaFormatos.getModel();
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            FormatoA f = (FormatoA) modelo.getValueAt(i, 0);
+            Boolean aprobar = (Boolean) modelo.getValueAt(i, 2);
+            Boolean rechazar = (Boolean) modelo.getValueAt(i, 3);
+            String observaciones = (String) modelo.getValueAt(i, 4);
 
-        if (Boolean.TRUE.equals(aprobar) || Boolean.TRUE.equals(rechazar)) {
-            enumEstadoProyecto estado = Boolean.TRUE.equals(aprobar)
-                    ? enumEstadoProyecto.APROBADO
-                    : enumEstadoProyecto.RECHAZADO;
+            if (Boolean.TRUE.equals(aprobar) || Boolean.TRUE.equals(rechazar)) {
+                enumEstadoProyecto estado = Boolean.TRUE.equals(aprobar)
+                        ? enumEstadoProyecto.APROBADO
+                        : enumEstadoProyecto.RECHAZADO;
 
-            
-            List<EvaluacionFormato> historial = serviceEvaluacion.obtenerHistorial(f.getId());
-            int intento = historial.size() + 1;
+                List<EvaluacionFormato> historial = serviceEvaluacion.obtenerHistorial(f.getId());
+                int intento = historial.size() + 1;
 
-            if (intento > 3 && estado == enumEstadoProyecto.RECHAZADO) {
-                JOptionPane.showMessageDialog(this,
-                        "No se puede rechazar más de 3 veces. Proyecto rechazado definitivamente.");
-                continue;
-            }
+                if (intento > 3 && estado == enumEstadoProyecto.RECHAZADO) {
+                    JOptionPane.showMessageDialog(this,
+                            "No se puede rechazar más de 3 veces. Proyecto rechazado definitivamente.");
+                    continue;
+                }
 
-           
-            boolean ok = serviceEvaluacion.evaluarFormato(f, estado, observaciones);
+                boolean ok = serviceEvaluacion.evaluarFormato(f, estado, observaciones);
 
-            if (ok) {
-                modelo.setValueAt(estado.name(), i, 1);
-            } else {
-                JOptionPane.showMessageDialog(this,
-                        "No se pudo registrar la evaluación para el proyecto: " + f.getTituloProyecto());
+                if (ok) {
+                    modelo.setValueAt(estado.name(), i, 1);
+                } else {
+                    JOptionPane.showMessageDialog(this,
+                            "No se pudo registrar la evaluación para el proyecto: " + f.getTituloProyecto());
+                }
             }
         }
+
+        JOptionPane.showMessageDialog(this, "Evaluaciones enviadas correctamente.");
+        cargarDatos();
     }
-
-    JOptionPane.showMessageDialog(this, "Evaluaciones enviadas correctamente.");
-    cargarDatos();
-}
-
-     
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -308,7 +313,7 @@ public class GuiCoordinador extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new GuiCoordinador(rol,email).setVisible(true);
+                new GuiCoordinador(rol, email).setVisible(true);
             }
         });
     }

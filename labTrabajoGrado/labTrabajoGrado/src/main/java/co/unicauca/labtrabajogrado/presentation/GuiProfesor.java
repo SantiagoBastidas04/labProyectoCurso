@@ -3,11 +3,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package co.unicauca.labtrabajogrado.presentation;
-import co.unicauca.labtrabajogrado.access.Factory;
+import co.unicauca.labtrabajogrado.access.IEvaluacionFormatoRepositorio;
 import co.unicauca.labtrabajogrado.access.IFormatoRepositorio;
-import co.unicauca.labtrabajogrado.access.IUserRepositorio;
 import co.unicauca.labtrabajogrado.access.ServiceLocator;
 import co.unicauca.labtrabajogrado.domain.FormatoA;
+import co.unicauca.labtrabajogrado.service.ServiceEvaluacionFormato;
 import co.unicauca.labtrabajogrado.service.serviceFormatoA;
 import co.unicauca.labtrabajogrado.utility.EmailValidator;
 import com.toedter.calendar.JDateChooser;
@@ -17,8 +17,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import static javax.swing.SwingConstants.CENTER;
 
 /**
  *
@@ -27,9 +25,12 @@ import static javax.swing.SwingConstants.CENTER;
 public class GuiProfesor extends javax.swing.JFrame {
     
     private final serviceFormatoA service;
+    private final ServiceEvaluacionFormato serviceEvaluacion;
     private static IFormatoRepositorio  formatoRepositorio;
+    private static IEvaluacionFormatoRepositorio formatoEvaluacionRepositorio;
     public static String email;
     public static String rol;
+    
     // Declaración de componentes
     private JTextField txtTituloTrabajo, txtDirector, txtCodirector;
     private JTextArea txtObjetivosEspecificos, txtObjetivoGeneral;
@@ -45,7 +46,9 @@ public class GuiProfesor extends javax.swing.JFrame {
      */
     public GuiProfesor(String rol , String email) {
         formatoRepositorio  = ServiceLocator.getInstance().getFormatoRepository();
+        formatoEvaluacionRepositorio = ServiceLocator.getInstance().getEvaluacionRepository();
         this.service = new serviceFormatoA(formatoRepositorio);
+        this.serviceEvaluacion = new ServiceEvaluacionFormato(formatoEvaluacionRepositorio);
         init(rol,email);
     }
 
@@ -86,12 +89,15 @@ public class GuiProfesor extends javax.swing.JFrame {
         lblMenu.setAlignmentX(Component.CENTER_ALIGNMENT);
         lblMenu.setFont(lblMenu.getFont().deriveFont(Font.BOLD, 16f));
 
-         String[] opciones = {"Seleccione", "Asignar Revisiones", "Consultar/Actualizar Proyectos", "Formato B","Ver Formatos Enviados"};
+         String[] opciones = {"Seleccione", "Consultar/Actualizar Proyectos","Ver Formatos Enviados"};
         JComboBox<String> comboMenu = new JComboBox<>(opciones);
         comboMenu.addActionListener(e -> {
         String opcion = (String) comboMenu.getSelectedItem();
     if ("Ver Formatos Enviados".equals(opcion)) {
         new GuiFormatoEnviado(service, email).setVisible(true);
+    }
+    if("Consultar/Actualizar Proyectos".equals(opcion)){
+        new GuiActualizarFormatos(serviceEvaluacion,email).setVisible(true);
     }
 });
 

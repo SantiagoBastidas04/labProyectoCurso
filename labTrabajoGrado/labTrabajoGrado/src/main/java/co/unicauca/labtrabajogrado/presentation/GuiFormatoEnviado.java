@@ -4,9 +4,11 @@
  */
 package co.unicauca.labtrabajogrado.presentation;
 
-import co.unicauca.labtrabajogrado.access.IFormatoRepositorio;
+import co.unicauca.labtrabajogrado.access.IEvaluacionFormatoRepositorio;
 import co.unicauca.labtrabajogrado.access.ServiceLocator;
+import co.unicauca.labtrabajogrado.domain.EvaluacionFormato;
 import co.unicauca.labtrabajogrado.domain.FormatoA;
+import co.unicauca.labtrabajogrado.service.ServiceEvaluacionFormato;
 import co.unicauca.labtrabajogrado.service.serviceFormatoA;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -35,13 +37,15 @@ import javax.swing.table.DefaultTableModel;
 public class GuiFormatoEnviado extends javax.swing.JFrame {
 
     private JTable tablaFormatos;
-    private IFormatoRepositorio formatoRepositorio;
-    private serviceFormatoA service;
+    private IEvaluacionFormatoRepositorio formatoRepositorio;
+    private ServiceEvaluacionFormato service;
     private static String email;
+    private serviceFormatoA serviceFormatoA;
 
     public GuiFormatoEnviado(serviceFormatoA service, String emailProfesor) {
-        formatoRepositorio  = ServiceLocator.getInstance().getFormatoRepository();
-        this.service = new serviceFormatoA(formatoRepositorio);
+        this.serviceFormatoA = service;
+        formatoRepositorio = ServiceLocator.getInstance().getEvaluacionRepository();
+        this.service = new ServiceEvaluacionFormato(formatoRepositorio);
         this.email = emailProfesor;
 
         setTitle("Formatos Enviados");
@@ -52,7 +56,8 @@ public class GuiFormatoEnviado extends javax.swing.JFrame {
         initComponents();
         cargarDatos();
     }
-   private void initComponents() {
+
+    private void initComponents() {
         setLayout(new BorderLayout());
 
         // Encabezado
@@ -77,19 +82,29 @@ public class GuiFormatoEnviado extends javax.swing.JFrame {
         JScrollPane scrollPane = new JScrollPane(tablaFormatos);
         add(scrollPane, BorderLayout.CENTER);
     }
-        
+
     private void cargarDatos() {
-        List<FormatoA> formatos = service.listarPorEmail(email);
+        List<FormatoA> formatos = serviceFormatoA.listarPorEmail(email);
 
         String[] columnas = {"Título", "Modalidad", "Estado", "Observaciones"};
         Object[][] datos = new Object[formatos.size()][4];
 
         for (int i = 0; i < formatos.size(); i++) {
             FormatoA f = formatos.get(i);
+            List<EvaluacionFormato> evaluaciones = service.listarPorCodigoFormato(f.getId());
+
             datos[i][0] = f.getTituloProyecto();
             datos[i][1] = f.getModalidad();
-            datos[i][2] = f.getEstado(); 
-            datos[i][3] = ""; // campo observaciones vacío
+
+            if (evaluaciones == null || evaluaciones.isEmpty()) {
+                // No tiene evaluación aún
+                datos[i][2] = "Pendiente";
+                datos[i][3] = "En revisión";
+            } else {
+                 EvaluacionFormato ultimaEval = evaluaciones.get(0); // si la query ya viene ordenada DESC
+                datos[i][2] = traducirEstado(ultimaEval.getIntento(), ultimaEval.getEstado().name());
+                datos[i][3] = ultimaEval.getObservaciones() != null ? ultimaEval.getObservaciones() : "";
+}
         }
 
         DefaultTableModel modelo = new DefaultTableModel(datos, columnas) {
@@ -99,13 +114,11 @@ public class GuiFormatoEnviado extends javax.swing.JFrame {
             }
         };
         tablaFormatos.setModel(modelo);
-
-        // Colorear columna Estado
         tablaFormatos.getColumnModel().getColumn(2).setCellRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,
-                                                          boolean isSelected, boolean hasFocus,
-                                                          int row, int column) {
+                    boolean isSelected, boolean hasFocus,
+                    int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 String estado = value != null ? value.toString() : "";
                 if ("Aprobado".equalsIgnoreCase(estado)) {
@@ -123,21 +136,27 @@ public class GuiFormatoEnviado extends javax.swing.JFrame {
             }
         });
 
-        // Evento clic en columna Título para abrir PDF
         tablaFormatos.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int fila = tablaFormatos.rowAtPoint(e.getPoint());
                 int columna = tablaFormatos.columnAtPoint(e.getPoint());
 
-                if (columna == 0) { // si clic en título
+                if (columna == 0) { // clic en título
                     FormatoA f = formatos.get(fila);
                     abrirPDF(f.getFormatoPdf());
                 }
             }
         });
     }
-
+    private String traducirEstado(int intento, String estado) {
+    switch (intento) {
+        case 1: return "Primera revisión - " + estado;
+        case 2: return "Segunda revisión - " + estado;
+        case 3: return "Tercera revisión - " + estado;
+        default: return estado;
+    }
+}
     private void abrirPDF(String ruta) {
         try {
             File pdf = new File(ruta);
@@ -150,6 +169,7 @@ public class GuiFormatoEnviado extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "No se pudo abrir el PDF: " + ex.getMessage());
         }
     }
+
     /**
      * Creates new form GuiFormatoEnviado
      */
@@ -162,7 +182,7 @@ public class GuiFormatoEnviado extends javax.swing.JFrame {
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
      */
- /*   
+    /*   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -212,15 +232,9 @@ public class GuiFormatoEnviado extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
-             public void run() {
-            // 🔥 Crear un FormatoService de prueba
-            serviceFormatoA service = new serviceFormatoA();
-            // Puedes agregar datos de prueba si no tienes BD aún:
-            // service.guardarFormato(new FormatoA("Proyecto 1", "Práctica Profesional", LocalDate.now(), "Director X", ...));
+            public void run() {
 
-            // Llamar a la nueva ventana con datos simulados
-            new GuiFormatoEnviado(service, email).setVisible(true);
-        }
+            }
         });
     }
 

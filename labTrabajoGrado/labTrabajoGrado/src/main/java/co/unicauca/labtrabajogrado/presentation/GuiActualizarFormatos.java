@@ -4,11 +4,9 @@
  */
 package co.unicauca.labtrabajogrado.presentation;
 
-import co.unicauca.labtrabajogrado.access.IFormatoRepositorio;
 import co.unicauca.labtrabajogrado.access.ServiceLocator;
 import co.unicauca.labtrabajogrado.domain.EvaluacionFormato;
-import co.unicauca.labtrabajogrado.domain.FormatoA;
-import co.unicauca.labtrabajogrado.service.serviceFormatoA;
+import co.unicauca.labtrabajogrado.service.ServiceEvaluacionFormato;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
@@ -24,13 +22,13 @@ import java.util.List;
 public class GuiActualizarFormatos extends javax.swing.JFrame {
     
     private JTable tablaFormatos;
-    private serviceFormatoA service;
+    private ServiceEvaluacionFormato service;
     private String emailProfesor;
     private List<EvaluacionFormato> formatos;
     /**
      * Creates new form GuiActualizarFormatos
      */
-     public GuiActualizarFormatos(serviceFormatoA service, String emailProfesor) {
+     public GuiActualizarFormatos(ServiceEvaluacionFormato service, String emailProfesor) {
         this.service = service;
         this.emailProfesor = emailProfesor;
 
@@ -94,8 +92,8 @@ public class GuiActualizarFormatos extends javax.swing.JFrame {
             public Object getValueAt(int rowIndex, int columnIndex) {
                 EvaluacionFormato f = formatos.get(rowIndex);
                 return switch (columnIndex) {
-                    //case 0 -> f.getTituloProyecto();
-                   // case 1 -> f.getModalidad();
+                    case 0 -> f.getTituloProyecto();
+                    case 1 -> f.getModalidad();
                     case 2 -> f.getEstado();
                     case 3 -> f.getObservaciones();
                     case 4 -> "Actualizar PDF"; // texto del botón
@@ -173,21 +171,30 @@ public class GuiActualizarFormatos extends javax.swing.JFrame {
         }
 
         private void actualizarPDF(EvaluacionFormato formato) {
-            JFileChooser chooser = new JFileChooser();
-            chooser.setDialogTitle("Selecciona el nuevo PDF");
-            int result = chooser.showOpenDialog(GuiActualizarFormatos.this);
-            if (result == JFileChooser.APPROVE_OPTION) {
-                File pdfFile = chooser.getSelectedFile();
-                service.actualizarFormatoPdf(formato.getCodigoFormato(), pdfFile.getAbsolutePath());
-                JOptionPane.showMessageDialog(GuiActualizarFormatos.this,
-                        "Formato actualizado correctamente con: " + pdfFile.getName());
-            }
+    JFileChooser chooser = new JFileChooser();
+    chooser.setDialogTitle("Selecciona el nuevo PDF");
+    int result = chooser.showOpenDialog(GuiActualizarFormatos.this);
+    
+    if (result == JFileChooser.APPROVE_OPTION) {
+        File pdfFile = chooser.getSelectedFile();
+        service.actualizarFormatoPdf(formato.getCodigoFormato(), pdfFile.getAbsolutePath());
+        EvaluacionFormato actualizadoFormato = service.obtenerUltimaEvaluacion(formato.getCodigoFormato());
+
+        if (actualizadoFormato == null) {
+            JOptionPane.showMessageDialog(GuiActualizarFormatos.this,
+                    "Este formato ha superado el límite de actualizaciones y fue eliminado.\nDebe iniciar un nuevo proceso.");
+        } else {
+            JOptionPane.showMessageDialog(GuiActualizarFormatos.this,
+                    "Formato actualizado correctamente con: " + pdfFile.getName());
         }
+        cargarDatos();
+    }
+}
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            serviceFormatoA service = new serviceFormatoA(ServiceLocator.getInstance().getFormatoRepository());
+            ServiceEvaluacionFormato service = new ServiceEvaluacionFormato(ServiceLocator.getInstance().getEvaluacionRepository());
             new GuiActualizarFormatos(service, "wpantoja@unicauca.edu.co").setVisible(true);
         });
     }

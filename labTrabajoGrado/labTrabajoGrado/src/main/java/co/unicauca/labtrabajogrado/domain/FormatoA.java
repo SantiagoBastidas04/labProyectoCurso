@@ -23,6 +23,7 @@ public class FormatoA {
     private String rutaCartaAceptacion;       // Ruta o nombre del archivo de la carta de aceptación (solo si modalidad == PRACTICA_PROFESIONAL)
     private String emailEstudiante; 
     private String estado;
+    
 // ID del docente que sube el formato (relación con usuario/docente)
     
 

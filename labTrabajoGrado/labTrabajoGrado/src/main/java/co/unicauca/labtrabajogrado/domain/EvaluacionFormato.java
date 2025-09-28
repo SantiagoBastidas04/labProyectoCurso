@@ -11,12 +11,28 @@ import java.time.LocalDateTime;
  * @author edwin
  */
 public class EvaluacionFormato {
-      private int idEvaluacion;
+    private int idEvaluacion;
     private Long codigoFormato;
     private int intento;
     private enumEstadoProyecto estado;  // Enum: EN_REVISION, APROBADO, RECHAZADO
     private String observaciones;
     private LocalDateTime fechaEvaluacion;
+    
+    private String tituloProyecto;
+    private String modalidad;
+    
+   
+    public EvaluacionFormato(Long codigoFormato, int intento, enumEstadoProyecto estado,
+                             String observaciones, LocalDateTime fechaEvaluacion,
+                             String tituloProyecto, String modalidad) {
+        this.codigoFormato = codigoFormato;
+        this.intento = intento;
+        this.estado = estado;
+        this.observaciones = observaciones;
+        this.fechaEvaluacion = fechaEvaluacion;
+        this.tituloProyecto = tituloProyecto;
+        this.modalidad = modalidad;
+    }
 
     public EvaluacionFormato(Long codigoFormato, int intento, enumEstadoProyecto estado,
                              String observaciones, LocalDateTime fechaEvaluacion) {
@@ -25,6 +41,9 @@ public class EvaluacionFormato {
         this.estado = estado;
         this.observaciones = observaciones;
         this.fechaEvaluacion = fechaEvaluacion;
+    }
+    public EvaluacionFormato(){
+        
     }
 
     public int getIdEvaluacion() {
@@ -73,6 +92,22 @@ public class EvaluacionFormato {
 
     public void setFechaEvaluacion(LocalDateTime fechaEvaluacion) {
         this.fechaEvaluacion = fechaEvaluacion;
+    }
+
+    public String getTituloProyecto() {
+        return tituloProyecto;
+    }
+
+    public void setTituloProyecto(String tituloProyecto) {
+        this.tituloProyecto = tituloProyecto;
+    }
+
+    public String getModalidad() {
+        return modalidad;
+    }
+
+    public void setModalidad(String modalidad) {
+        this.modalidad = modalidad;
     }
     
 }
