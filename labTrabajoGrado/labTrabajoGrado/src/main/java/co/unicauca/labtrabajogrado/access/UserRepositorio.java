@@ -70,9 +70,9 @@ public class UserRepositorio implements IUserRepositorio{
             usuario.setEmail(rs.getString("email"));
             usuario.setContraseña(rs.getString("contrasenia"));
             usuario.setNombre(rs.getString("nombres"));
-            String rolStr = rs.getString("rol"); // <- viene de la BD como String
+            String rolStr = rs.getString("rol"); 
             if (rolStr != null) {
-                usuario.setRol(enumRol.valueOf(rolStr)); // convierte String -> enumRol
+                usuario.setRol(enumRol.valueOf(rolStr));
             }
             
             

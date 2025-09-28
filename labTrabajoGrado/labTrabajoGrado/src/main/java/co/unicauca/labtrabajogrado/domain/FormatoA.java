@@ -11,21 +11,19 @@ import java.time.LocalDate;
  * @author Acer
  */
 public class FormatoA {
-    private Long id;                          // Identificador único
-    private String tituloProyecto;            // Título del proyecto de grado
-    private String modalidad;                 // "INVESTIGACION" o "PRACTICA_PROFESIONAL"
-    private LocalDate fechaActual;            // Fecha de registro/subida
-    private String director;                  // Nombre del director del proyecto
-    private String codirector;                // Nombre del codirector (opcional, puede ser null)
-    private String objetivoGeneral;           // Objetivo general del proyecto
-    private String objetivosEspecificos;      // Objetivos específicos (puede ser un texto largo)
-    private String formatoPdf;                // Ruta o nombre del archivo PDF subido
-    private String rutaCartaAceptacion;       // Ruta o nombre del archivo de la carta de aceptación (solo si modalidad == PRACTICA_PROFESIONAL)
+    private Long id;                          
+    private String tituloProyecto;           
+    private String modalidad;                 
+    private LocalDate fechaActual;            
+    private String director;                 
+    private String codirector;               
+    private String objetivoGeneral;           
+    private String objetivosEspecificos;      
+    private String formatoPdf;               
+    private String rutaCartaAceptacion;       
     private String emailEstudiante; 
     private String estado;
-    
-// ID del docente que sube el formato (relación con usuario/docente)
-    
+
 
     public FormatoA(Long id, String tituloProyecto, String modalidad, LocalDate fechaActual, String director, String codirector, String objetivoGeneral, String objetivosEspecificos, String formatoPdf, String rutaCartaAceptacion,String emailEstudiante) {
         this.id = id;

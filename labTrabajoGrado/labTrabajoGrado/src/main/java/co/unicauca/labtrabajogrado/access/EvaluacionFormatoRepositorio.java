@@ -142,7 +142,7 @@ public class EvaluacionFormatoRepositorio implements IEvaluacionFormatoRepositor
 
         eval.setIntento(rs.getInt("intento"));
 
-        // ✅ Leer la fecha como String
+      
         String fechaStr = rs.getString("fechaEvaluacion");
         if (fechaStr != null && !fechaStr.isBlank()) {
             try {
@@ -155,7 +155,7 @@ public class EvaluacionFormatoRepositorio implements IEvaluacionFormatoRepositor
             eval.setFechaEvaluacion(null);
         }
 
-        // Estas columnas no siempre existen, valida antes de leer
+        
         try {
             eval.setTituloProyecto(rs.getString("tituloProyecto"));
         } catch (SQLException ignore) {
@@ -252,7 +252,7 @@ public class EvaluacionFormatoRepositorio implements IEvaluacionFormatoRepositor
             }
             System.out.println(" SE SUPERÓ EL LÍMITE DE INTENTOS para formato " + idFormato);
         } else {
-            // 4️⃣ Si aún no supera → actualizar estado e incrementar intento
+            
             String sqlEval = "UPDATE EvaluacionFormato "
                     + "SET estado = 'Pendiente', intento = intento + 1, fechaEvaluacion = ? "
                     + "WHERE codigoFormato = ?";

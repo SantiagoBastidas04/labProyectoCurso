@@ -38,12 +38,10 @@ public class GuiProfesor extends javax.swing.JFrame {
     private JComboBox<String> comboModalidad;
     private JTextField txtCorreo;
     private JButton btnBrowseFormato, btnBrowseCarta;
-    private JPanel cartaPanel; // panel para carta aceptación
-    private JDateChooser dateChooser; // calendario popup
+    private JPanel cartaPanel; 
+    private JDateChooser dateChooser; 
 
-    /**
-     * Creates new form GuiProfesor
-     */
+   
     public GuiProfesor(String rol , String email) {
         formatoRepositorio  = ServiceLocator.getInstance().getFormatoRepository();
         formatoEvaluacionRepositorio = ServiceLocator.getInstance().getEvaluacionRepository();
@@ -101,13 +99,12 @@ public class GuiProfesor extends javax.swing.JFrame {
     }
 });
 
-// 👇👇👇 ESTAS SON LAS LÍNEAS NUEVAS QUE LO HACEN MÁS PEQUEÑO Y ESTÉTICO 👇👇👇
-        comboMenu.setFont(comboMenu.getFont().deriveFont(12f)); // Texto más pequeño
-        comboMenu.setPreferredSize(new Dimension(160, 26));     // Ancho reducido (160), alto compacto (26)
-        comboMenu.setMaximumSize(comboMenu.getPreferredSize()); // Evita que se estire
-        comboMenu.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5)); // Borde interno para respirar
 
-// Opcional: centrar texto dentro del combo (mejora estética)
+        comboMenu.setFont(comboMenu.getFont().deriveFont(12f)); 
+        comboMenu.setPreferredSize(new Dimension(160, 26));    
+        comboMenu.setMaximumSize(comboMenu.getPreferredSize()); 
+        comboMenu.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5)); 
+
         comboMenu.setRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
@@ -121,7 +118,6 @@ public class GuiProfesor extends javax.swing.JFrame {
         panelLateral.add(Box.createRigidArea(new Dimension(0, 15)));
         panelLateral.add(comboMenu);
 
-        // === Panel formulario ===
         JPanel mainPanel = new JPanel();
         mainPanel.setBackground(Color.WHITE);
         mainPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
@@ -137,15 +133,15 @@ public class GuiProfesor extends javax.swing.JFrame {
         txtObjetivosEspecificos.setWrapStyleWord(true);
         JScrollPane scrollObjetivos = new JScrollPane(txtObjetivosEspecificos);
 
-        // Modalidad (combo con listener)
+        
         comboModalidad = new JComboBox<>(new String[]{"Práctica profesional", "Trabajo de investigación"});
         comboModalidad.addActionListener(e -> toggleCartaAceptacion());
 
-        // Calendario popup con JDateChooser
+        
         dateChooser = new JDateChooser();
         dateChooser.setDateFormatString("dd/MM/yyyy");
 
-        // Browsers
+       
         txtFormatoPdf = new JTextField(15);
         btnBrowseFormato = new JButton("Browse...");
         btnBrowseFormato.addActionListener((ActionEvent e) -> {
@@ -168,14 +164,14 @@ public class GuiProfesor extends javax.swing.JFrame {
             }
         });
 
-        // Panel para carta aceptación (se oculta dinámicamente)
+        
         cartaPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
         cartaPanel.setOpaque(false);
         cartaPanel.add(new JLabel("Carta de aceptación"));
         cartaPanel.add(txtCartaAceptacion);
         cartaPanel.add(btnBrowseCarta);
 
-        // Labels
+        
         JLabel lblTituloTrabajo = new JLabel("Título trabajo de grado*");
         JLabel lblDirector = new JLabel("Director del proyecto de grado*");
         JLabel lblCodirector = new JLabel("Codirector del proyecto de grado");
@@ -186,8 +182,7 @@ public class GuiProfesor extends javax.swing.JFrame {
         JLabel lblObjetivosEspecificos = new JLabel("Objetivos específicos*");
         JLabel lblFormatoPdf = new JLabel("Formato en PDF*");
 
-        // Layout formulario
-        // Layout formulario
+    
         GroupLayout layout = new GroupLayout(mainPanel);
         mainPanel.setLayout(layout);
 
@@ -256,7 +251,7 @@ public class GuiProfesor extends javax.swing.JFrame {
                                 .addComponent(lblObjetivosEspecificos))
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addComponent(scrollObjetivos)
-                                .addComponent(cartaPanel)) // cartaPanel se alinea con el scroll, pero solo aparece si es necesario
+                                .addComponent(cartaPanel))
         );
         JButton btnSubir = new JButton("Subir");
         btnSubir.setBackground(new Color(106, 153, 148));
@@ -268,14 +263,14 @@ public class GuiProfesor extends javax.swing.JFrame {
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         bottomPanel.setBackground(Color.WHITE);
         bottomPanel.add(btnSubir);
-        // Contenedor principal
+        
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(panelHeader, BorderLayout.NORTH);
         getContentPane().add(panelLateral, BorderLayout.WEST);
         getContentPane().add(mainPanel, BorderLayout.CENTER);
         getContentPane().add(bottomPanel, BorderLayout.SOUTH);
 
-        toggleCartaAceptacion(); // inicializar visibilidad
+        toggleCartaAceptacion(); 
 
         pack();
         setLocationRelativeTo(null);
@@ -348,14 +343,12 @@ public class GuiProfesor extends javax.swing.JFrame {
         String formatoPdf = txtFormatoPdf.getText();
         String cartaAceptacion = txtCartaAceptacion.getText();
         
-        // Convertir java.util.Date a LocalDate
+        
         LocalDate fechaActual = fecha.toInstant()
                 .atZone(java.time.ZoneId.systemDefault())
                 .toLocalDate();
         
-        
-
-        // Crear el objeto FormatoA
+ 
         
         FormatoA formato = new FormatoA(
                 null, // id autogenerado

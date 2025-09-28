@@ -97,11 +97,11 @@ public class GuiFormatoEnviado extends javax.swing.JFrame {
             datos[i][1] = f.getModalidad();
 
             if (evaluaciones == null || evaluaciones.isEmpty()) {
-                // No tiene evaluación aún
+                
                 datos[i][2] = "Pendiente";
                 datos[i][3] = "En revisión";
             } else {
-                 EvaluacionFormato ultimaEval = evaluaciones.get(0); // si la query ya viene ordenada DESC
+                 EvaluacionFormato ultimaEval = evaluaciones.get(0); 
                 datos[i][2] = traducirEstado(ultimaEval.getIntento(), ultimaEval.getEstado().name());
                 datos[i][3] = ultimaEval.getObservaciones() != null ? ultimaEval.getObservaciones() : "";
 }
@@ -110,7 +110,7 @@ public class GuiFormatoEnviado extends javax.swing.JFrame {
         DefaultTableModel modelo = new DefaultTableModel(datos, columnas) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 3; // solo Observaciones editable
+                return column == 3; 
             }
         };
         tablaFormatos.setModel(modelo);
@@ -142,7 +142,7 @@ public class GuiFormatoEnviado extends javax.swing.JFrame {
                 int fila = tablaFormatos.rowAtPoint(e.getPoint());
                 int columna = tablaFormatos.columnAtPoint(e.getPoint());
 
-                if (columna == 0) { // clic en título
+                if (columna == 0) {
                     FormatoA f = formatos.get(fila);
                     abrirPDF(f.getFormatoPdf());
                 }

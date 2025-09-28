@@ -14,7 +14,7 @@ public class EvaluacionFormato {
     private int idEvaluacion;
     private Long codigoFormato;
     private int intento;
-    private enumEstadoProyecto estado;  // Enum: EN_REVISION, APROBADO, RECHAZADO
+    private enumEstadoProyecto estado; 
     private String observaciones;
     private LocalDateTime fechaEvaluacion;
     

@@ -52,12 +52,12 @@ public class GuiLogin extends javax.swing.JFrame {
         this.setTitle("Iniciar Sesión");
         this.setSize(400, 300);
         this.setLocationRelativeTo(null);
-        this.getContentPane().setBackground(new Color(245, 245, 245)); // Fondo gris claro
+        this.getContentPane().setBackground(new Color(245, 245, 245)); 
         this.setLayout(new BorderLayout());
 
-        // ====== HEADER ======
+        
         JPanel header = new JPanel();
-        header.setBackground(new Color(72, 201, 176)); // Verde azulado
+        header.setBackground(new Color(72, 201, 176)); 
         header.setPreferredSize(new Dimension(400, 60));
 
         JLabel titulo = new JLabel("Iniciar Sesión", SwingConstants.CENTER);
@@ -68,7 +68,7 @@ public class GuiLogin extends javax.swing.JFrame {
 
         this.add(header, BorderLayout.NORTH);
 
-        // ====== CENTRO ======
+        
         JPanel centerPanel = new JPanel();
         centerPanel.setBackground(new Color(245, 245, 245));
         centerPanel.setLayout(new GridBagLayout());
@@ -82,7 +82,7 @@ public class GuiLogin extends javax.swing.JFrame {
         txtCorreo.setPreferredSize(new Dimension(200, 30));
         txtContrasenia.setPreferredSize(new Dimension(200, 30));
         
-        // Label Correo
+        
         labelCorreo.setFont(labelsFont);
         labelCorreo.setForeground(labelColor);
 
@@ -92,7 +92,7 @@ public class GuiLogin extends javax.swing.JFrame {
         gbc.gridx = 1;
         centerPanel.add(txtCorreo, gbc);
         
-        // Label Contraseña
+      
         jLabel1.setText("Contraseña: ");
         jLabel1.setFont(labelsFont);
         jLabel1.setForeground(labelColor);
@@ -105,7 +105,7 @@ public class GuiLogin extends javax.swing.JFrame {
 
         this.add(centerPanel, BorderLayout.CENTER);
 
-        // ====== BOTONES ======
+        
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(new Color(245, 245, 245));
 
@@ -118,7 +118,7 @@ public class GuiLogin extends javax.swing.JFrame {
         this.add(buttonPanel, BorderLayout.SOUTH);
 }
 
-// Método para personalizar botones
+
     private void personalizarBoton(JButton boton, Color bgColor) {
         boton.setBackground(bgColor);
         boton.setForeground(Color.WHITE);

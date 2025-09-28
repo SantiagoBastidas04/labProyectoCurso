@@ -154,7 +154,6 @@ public class GuiCoordinador extends javax.swing.JFrame {
             }
         });
 
-        // Render Estado con colores
         tablaFormatos.getColumnModel().getColumn(1).setCellRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,

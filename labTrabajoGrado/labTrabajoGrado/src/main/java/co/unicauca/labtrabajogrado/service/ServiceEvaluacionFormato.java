@@ -58,11 +58,11 @@ public class ServiceEvaluacionFormato {
             throw new IllegalArgumentException("Formato y estado no pueden ser nulos");
         }
 
-        // 1️⃣ Obtener la última evaluación pendiente
+       
         EvaluacionFormato ultimaPendiente = repositorio.obtenerUltimaEvaluacion(formato.getId());
 
         if (ultimaPendiente != null) {
-            // 2️⃣ Actualizar la evaluación pendiente
+            
             ultimaPendiente.setEstado(estado);
             ultimaPendiente.setObservaciones(observaciones);
             ultimaPendiente.setFechaEvaluacion(LocalDateTime.now());
@@ -70,10 +70,10 @@ public class ServiceEvaluacionFormato {
             return repositorio.actualizarEvaluacion(ultimaPendiente);
 
         } else {
-            // 3️⃣ Si no hay evaluación pendiente, crear una nueva
+            
             EvaluacionFormato nuevaEvaluacion = new EvaluacionFormato(
                     formato.getId(),
-                    1, // primer intento si nunca tuvo evaluación pendiente
+                    1,
                     estado,
                     observaciones != null ? observaciones : "",
                     LocalDateTime.now()
@@ -112,7 +112,7 @@ public class ServiceEvaluacionFormato {
             repositorio.actualizarFormatoPdf(id, absolutePath);
         } catch (SQLException ex) {
             Logger.getLogger(serviceFormatoA.class.getName()).log(Level.SEVERE, null, ex);
-            // Puedes mostrar un JOptionPane aquí si quieres notificar al usuario
+           
         }
     }
 }

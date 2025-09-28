@@ -25,9 +25,7 @@ public class GuiActualizarFormatos extends javax.swing.JFrame {
     private ServiceEvaluacionFormato service;
     private String emailProfesor;
     private List<EvaluacionFormato> formatos;
-    /**
-     * Creates new form GuiActualizarFormatos
-     */
+    
      public GuiActualizarFormatos(ServiceEvaluacionFormato service, String emailProfesor) {
         this.service = service;
         this.emailProfesor = emailProfesor;
@@ -43,7 +41,7 @@ public class GuiActualizarFormatos extends javax.swing.JFrame {
      private void initComponents() {
         setLayout(new BorderLayout());
 
-        // Encabezado
+        
         JPanel header = new JPanel(new BorderLayout());
         header.setBackground(new Color(90, 150, 150));
         JLabel lblTitulo = new JLabel("Formatos asignados para actualización");
@@ -66,10 +64,10 @@ public class GuiActualizarFormatos extends javax.swing.JFrame {
     }
 
     private void cargarDatos() {
-        // trae los formatos asignados al profesor
+        
         formatos = service.listarFormatosRechazados(emailProfesor);
 
-        // Modelo personalizado con botón
+        
         tablaFormatos.setModel(new AbstractTableModel() {
             private final String[] columnas = {"Título", "Modalidad", "Estado", "Observaciones", "Acción"};
 
@@ -103,17 +101,15 @@ public class GuiActualizarFormatos extends javax.swing.JFrame {
 
             @Override
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                // solo la columna del botón es “editable” para activar el botón
+                
                 return columnIndex == 4;
             }
         });
 
-        // renderer para el botón
+       
         tablaFormatos.getColumnModel().getColumn(4).setCellRenderer(new ButtonRenderer());
         tablaFormatos.getColumnModel().getColumn(4).setCellEditor(new ButtonEditor(new JCheckBox()));
 
-        // Colorear columna Estado (opcional)
-        // …
     }
 
     // Renderer para mostrar un botón en la celda
